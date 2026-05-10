@@ -33,6 +33,7 @@
   .header-sub { font-size: 12px; color: #b8b0a8; letter-spacing: 0.8px; margin-top: 3px; }
   .header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .header-right .last-update { font-size: 12px; color: #c4bdb5; }
+  .sync-status { font-size: 11px; margin-right: 4px; white-space: nowrap; }
 
   /* Summary */
   .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 20px; }
@@ -241,6 +242,7 @@
     .header h1 { font-size: 18px; }
     .header-right .btn { font-size: 11px; padding: 5px 10px; }
     .header-right .last-update { font-size: 11px; width: 100%; text-align: center; order: 10; margin-top: 4px; }
+    .sync-status { font-size: 10px; }
     .summary { grid-template-columns: 1fr 1fr; gap: 10px; }
     .summary-card { padding: 14px 16px; }
     .summary-card .value { font-size: 18px; }
@@ -340,6 +342,7 @@
       <div class="header-sub">港股 · A股（海通 / 东莞）</div>
     </div>
     <div class="header-right">
+      <span class="sync-status" id="syncStatus"></span>
       <span class="last-update" id="updateTime">本地</span>
       <button class="btn btn-refresh" onclick="refreshPrices()">⟳ 行情</button>
       <button class="btn btn-add" onclick="showAddModal()">＋ 添加</button>
@@ -484,19 +487,23 @@
 <!-- Share Modal -->
 <div class="modal-overlay" id="shareModal">
   <div class="modal" style="width:460px;">
-    <div class="modal-header">分享此页面</div>
+    <div class="modal-header">设置 & 分享</div>
     <div class="modal-body" style="font-size:13px;line-height:1.7;color:#6a6058;">
       <p style="margin-bottom:12px;">将此链接分享给他人：</p>
       <div style="padding:14px 16px;background:#f5f0eb;border-radius:10px;margin-bottom:14px;word-break:break-all;font-size:12px;color:#8a7f74;text-align:center;">
         https://fangdayi33-arch.github.io/stock-portfolio/
       </div>
-      <p style="margin-bottom:10px;"><strong style="color:#c8a062;">⚠ 注意：</strong>每个人的数据保存在各自的浏览器中。</p>
-      <div style="padding:12px 16px;background:#faf7f4;border-radius:10px;margin-bottom:10px;">
-        <p style="color:#8a7f74;font-size:12px;">
-          你编辑的股票持仓数据只存在你手机的 localStorage 中。别人打开这个链接看到的是默认模板，需要自己添加数据。不是实时同步的。
-        </p>
+      <p style="margin-bottom:10px;"><strong style="color:#4a8c7c;">☁ 云端同步：</strong>数据已通过 GitHub 同步，所有人编辑后刷新即可看到最新数据。</p>
+      <div style="padding:14px 16px;background:#faf7f4;border-radius:10px;margin-bottom:10px;">
+        <div style="font-weight:600;color:#6a6058;margin-bottom:8px;font-size:12px;">GitHub Token 设置</div>
+        <p style="color:#8a7f74;font-size:12px;margin-bottom:8px;">如需编辑权限，请在下方输入 Token（只需设置一次，保存在本设备）：</p>
+        <input type="password" id="githubTokenInput" style="width:100%;padding:9px 12px;background:#ffffff;border:1px solid #e6e0d8;border-radius:9px;font-size:13px;color:#1c1a18;margin-bottom:8px;" placeholder="输入 github_pat_...">
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary" style="padding:6px 16px;font-size:12px;" onclick="saveGithubToken()">保存 Token</button>
+          <button class="btn btn-edit" style="padding:6px 16px;font-size:12px;" onclick="document.getElementById('githubTokenInput').value='';localStorage.removeItem('stock_github_token');showToast('Token 已清除')">清除</button>
+        </div>
+        <p style="color:#b8b0a8;font-size:11px;margin-top:6px;" id="githubTokenStatus">当前：未设置</p>
       </div>
-      <p style="color:#b8b0a8;font-size:12px;">如果需要大家看到同一份数据，后续可以加后端数据库支持。</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="document.getElementById('shareModal').classList.remove('active')">关闭</button>
@@ -592,9 +599,9 @@ function unlockApp() {
   setTimeout(() => { overlay.style.display = 'none'; startApp(); }, 500);
 }
 
-function startApp() {
+async function startApp() {
   try {
-    loadData();
+    await loadData();
     renderAll();
   } catch(e) {
     console.error(e);
@@ -603,6 +610,7 @@ function startApp() {
       renderAll();
     } catch(e2) {}
   }
+  setGithubTokenStatus();
 }
 
 document.addEventListener('DOMContentLoaded', initPassword);
@@ -618,21 +626,135 @@ function fmt(n, d) {
   }
 }
 
+/* ====== GitHub 云同步 ====== */
+const GITHUB_OWNER = 'fangdayi33-arch';
+const GITHUB_REPO = 'stock-portfolio';
+const GITHUB_PATH = 'data.json';
+const GITHUB_TOKEN_KEY = 'stock_github_token';
+const GITHUB_RAW_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/master/${GITHUB_PATH}`;
+const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
+let githubSha = null;
+
+function getGithubToken() { return localStorage.getItem(GITHUB_TOKEN_KEY); }
+
+function setGithubTokenStatus() {
+  const el = document.getElementById('githubTokenStatus');
+  if (!el) return;
+  el.textContent = '当前：' + (getGithubToken() ? '已设置 ✓' : '未设置（仅浏览）');
+}
+
+function saveGithubToken() {
+  const input = document.getElementById('githubTokenInput');
+  const token = input.value.trim();
+  if (!token) return showToast('请输入 Token');
+  localStorage.setItem(GITHUB_TOKEN_KEY, token);
+  input.value = '';
+  setGithubTokenStatus();
+  showToast('Token 已保存');
+  // Sync current data to GitHub
+  syncToGithub();
+}
+
+async function loadFromGithub() {
+  const resp = await fetch(GITHUB_API_URL);
+  if (!resp.ok) throw new Error('GitHub fetch: ' + resp.status);
+  const data = await resp.json();
+  githubSha = data.sha;
+  const content = decodeURIComponent(escape(atob(data.content)));
+  return JSON.parse(content);
+}
+
+async function saveToGithub(data) {
+  const token = getGithubToken();
+  if (!token) return;
+
+  let sha = githubSha;
+  if (!sha) {
+    try {
+      const r = await fetch(GITHUB_API_URL);
+      if (r.ok) { const d = await r.json(); sha = d.sha; }
+    } catch(e) {}
+  }
+
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  const body = { message: '更新持仓 ' + new Date().toLocaleString('zh-CN'), content, branch: 'master' };
+  if (sha) body.sha = sha;
+
+  const resp = await fetch(GITHUB_API_URL, {
+    method: 'PUT',
+    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+
+  if (!resp.ok) throw new Error('GitHub save: ' + resp.status);
+
+  const result = await resp.json();
+  githubSha = result.content.sha;
+}
+
+function setSyncStatus(type) {
+  const el = document.getElementById('syncStatus');
+  if (!el) return;
+  const s = {
+    loading: ['☁ 同步中...', '#b8b0a8'],
+    ok: ['☁ 已同步', '#4a8c7c'],
+    err: ['☁ 同步失败', '#c45a5a'],
+    offline: ['☁ 本地', '#c4bdb5'],
+    saving: ['☁ 保存中...', '#c8a062'],
+  }[type] || ['', ''];
+  el.textContent = s[0];
+  el.style.color = s[1];
+}
+
+async function syncToGithub() {
+  if (!getGithubToken()) return;
+  try {
+    setSyncStatus('saving');
+    await saveToGithub(stocks);
+    setSyncStatus('ok');
+  } catch(e) {
+    console.error('GitHub sync error:', e);
+    setSyncStatus('err');
+  }
+}
+
 /* ====== 数据加载 & 迁移 ====== */
-function loadData() {
+async function loadData() {
+  // Try GitHub first
+  try {
+    const ghData = await loadFromGithub();
+    stocks = ghData;
+    migrateOldData();
+    setSyncStatus('ok');
+    return;
+  } catch(e) { /* fall through */ }
+
+  // Fall back to localStorage
   try {
     const r = localStorage.getItem(STORAGE_KEY);
     if (r) {
       stocks = JSON.parse(r);
       migrateOldData();
+      setSyncStatus('offline');
+      // Try to push local data to GitHub if token exists
+      if (getGithubToken()) { syncToGithub(); }
     } else {
       stocks = JSON.parse(JSON.stringify(DEFAULT_DATA));
-      saveData();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stocks));
+      if (getGithubToken()) { syncToGithub(); }
+      else { setSyncStatus('offline'); }
     }
-  } catch(e) { stocks = JSON.parse(JSON.stringify(DEFAULT_DATA)); saveData(); }
+  } catch(e) {
+    stocks = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stocks));
+    setSyncStatus('offline');
+  }
 }
 
-function saveData() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(stocks)); } catch(e) {} }
+function saveData() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(stocks)); } catch(e) {}
+  syncToGithub();
+}
 
 function migrateOldData() {
   const needs = stocks.some(s => s.account === 'haitong');
