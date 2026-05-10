@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>投资组合持仓管理</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft YaHei", sans-serif;
+    background: #f5f0eb;
+    color: #1c1a18;
+    padding: 24px;
+    min-height: 100vh;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: #f0ebe5; }
+  ::-webkit-scrollbar-thumb { background: #d4cdc5; border-radius: 3px; }
+
+  /* Header */
+  .header {
+    background: #ffffff;
+    border: 1px solid #e6e0d8;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+    border-radius: 16px; margin-bottom: 20px;
+    padding: 22px 28px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+  }
+  .header h1 { font-size: 22px; font-weight: 600; color: #1c1a18; letter-spacing: -0.3px; }
+  .header h1 span { color: #c8a062; font-weight: 700; }
+  .header-sub { font-size: 12px; color: #b8b0a8; letter-spacing: 0.8px; margin-top: 3px; }
+  .header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .header-right .last-update { font-size: 12px; color: #c4bdb5; }
+
+  /* Summary */
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .summary-card {
+    background: #ffffff;
+    border: 1px solid #e6e0d8;
+    border-radius: 14px; padding: 18px 22px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+    transition: all 0.2s;
+  }
+  .summary-card:hover {
+    border-color: #d4cdc5;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transform: translateY(-1px);
+  }
+  .summary-card .label { font-size: 10px; color: #b8b0a8; letter-spacing: 1.2px; font-weight: 500; text-transform: uppercase; }
+  .summary-card .value { font-size: 22px; font-weight: 600; margin-top: 4px; font-family: "SF Mono", "Courier New", monospace; color: #1c1a18; }
+  .summary-card .value.profit { color: #c45a5a; }
+  .summary-card .value.loss { color: #4a8c7c; }
+  .summary-card .value.neutral { color: #c8a062; }
+  .summary-card .sub {
+    font-size: 11px; color: #c4bdb5; margin-top: 6px;
+    font-family: "SF Mono", "Courier New", monospace; line-height: 1.6;
+  }
+  .summary-card .sub .num { color: #b8b0a8; }
+
+  /* Industry Chart */
+  .chart-section {
+    background: #ffffff;
+    border: 1px solid #e6e0d8;
+    border-radius: 14px; margin-bottom: 20px; padding: 22px 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+  }
+  .chart-title { font-size: 15px; font-weight: 600; color: #1c1a18; margin-bottom: 18px; letter-spacing: -0.2px; }
+  .chart-wrap { display: flex; gap: 36px; align-items: center; flex-wrap: wrap; }
+  .chart-canvas-wrap { flex-shrink: 0; text-align: center; }
+  #industryChart { max-width: 100%; height: auto; }
+  .chart-legend { display: flex; flex-direction: column; gap: 8px; min-width: 200px; flex: 1; }
+  .legend-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; padding: 2px 0; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  .legend-label { color: #1c1a18; white-space: nowrap; }
+  .legend-value { margin-left: auto; font-family: "SF Mono", "Courier New", monospace; font-size: 11px; color: #b8b0a8; }
+  .legend-pct { font-family: "SF Mono", "Courier New", monospace; font-size: 11px; color: #c8a062; min-width: 44px; text-align: right; }
+
+  /* Market Sections */
+  .market-section {
+    background: #ffffff;
+    border: 1px solid #e6e0d8;
+    border-radius: 14px; margin-bottom: 18px; overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+  }
+  .market-header {
+    padding: 16px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    user-select: none; border-bottom: 1px solid #f0ebe5;
+    transition: background 0.2s;
+  }
+  .market-header:hover { background: #faf7f4; }
+  .market-header .left { display: flex; align-items: center; gap: 12px; }
+  .market-header .badge {
+    font-size: 10px; padding: 3px 12px; border-radius: 20px; font-weight: 500;
+    letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .badge-hk { background: #f7f0e6; color: #b8894c; border: 1px solid #ede0d0; }
+  .badge-us { background: #f0ebe5; color: #8a7f74; border: 1px solid #e6e0d8; }
+  .badge-a { background: #f5eae8; color: #b87a6a; border: 1px solid #e8ddd8; }
+  .market-header .count { font-size: 12px; color: #c4bdb5; }
+  .market-header .arrow { font-size: 11px; color: #d4cdc5; transition: transform 0.3s; }
+  .market-header .arrow.collapsed { transform: rotate(-90deg); }
+  .market-body { padding: 16px 22px; }
+  .market-body.hidden { display: none; }
+
+  /* Sub-account */
+  .sub-account { margin-top: 14px; }
+  .sub-account:first-of-type { margin-top: 0; }
+  .sub-account-title {
+    font-size: 13px; font-weight: 600; color: #6a6058;
+    padding: 8px 0 8px 14px;
+    border-left: 2px solid #c8a062;
+    margin-bottom: 12px;
+    letter-spacing: 0.3px;
+  }
+
+  /* Account Cash */
+  .account-cash {
+    display: flex; gap: 24px; padding: 10px 16px; margin-top: 10px;
+    background: #faf7f4; border-radius: 10px;
+    border: 1px solid #f0ebe5;
+    flex-wrap: wrap;
+  }
+  .account-cash .item { font-size: 12px; color: #6a6058; }
+  .account-cash .item .lbl { color: #b8b0a8; margin-right: 4px; }
+  .account-cash .item .val { font-family: "SF Mono", "Courier New", monospace; color: #6a6058; font-weight: 500; }
+  .account-cash .item .val.highlight { color: #c8a062; font-weight: 600; }
+
+  /* Table */
+  .stock-table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .stock-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 680px; }
+  .stock-table thead th {
+    padding: 10px 8px; text-align: left; font-weight: 500;
+    color: #b8b0a8; font-size: 10px;
+    border-bottom: 1px solid #f0ebe5;
+    white-space: nowrap; letter-spacing: 0.4px; text-transform: uppercase;
+  }
+  .stock-table tbody td { padding: 10px 8px; border-bottom: 1px solid #f5f0eb; vertical-align: middle; color: #1c1a18; }
+  .stock-table tbody tr:last-child td { border-bottom: none; }
+  .stock-table tbody tr:hover { background: #faf7f4; }
+  .stock-table .stock-name { font-weight: 500; color: #1c1a18; }
+  .stock-table .stock-code { color: #c4bdb5; font-size: 11px; font-family: "SF Mono", "Courier New", monospace; display: block; }
+  .stock-table .price { font-family: "SF Mono", "Courier New", monospace; font-weight: 600; color: #1c1a18; font-size: 13px; }
+  .stock-table .text-right { text-align: right; }
+  .profit { font-weight: 600; font-family: "SF Mono", "Courier New", monospace; font-size: 13px; }
+  .profit.up { color: #c45a5a; }
+  .profit.down { color: #4a8c7c; }
+
+  /* Buttons */
+  .actions { display: flex; gap: 4px; justify-content: flex-end; }
+  .btn {
+    padding: 5px 12px; border: none; border-radius: 8px; cursor: pointer;
+    font-size: 11px; font-weight: 500; transition: all 0.2s;
+    letter-spacing: 0.2px;
+  }
+  .btn-edit { background: #f5f0eb; color: #6a6058; border: 1px solid #e6e0d8; }
+  .btn-edit:hover { background: #ede8e2; }
+  .btn-delete { background: #faf0ee; color: #b87a6a; border: 1px solid #f0e0da; }
+  .btn-delete:hover { background: #f5e5e0; }
+  .btn-refresh { background: #f0f5f2; color: #4a8c7c; border: 1px solid #e0e8e4; }
+  .btn-refresh:hover { background: #e5ede8; }
+  .btn-add {
+    background: #ffffff; color: #c8a062; border: 1px solid #e6e0d8; padding: 7px 16px; font-size: 12px;
+  }
+  .btn-add:hover { background: #faf7f4; border-color: #d4cdc5; }
+  .btn-add-sm {
+    background: #ffffff; color: #4a8c7c;
+    border: 1px solid #e0e8e4; padding: 4px 12px; font-size: 11px;
+  }
+  .btn-add-sm:hover { background: #f0f5f2; }
+  .btn-primary {
+    background: #c8a062; color: #ffffff; padding: 10px 28px; font-size: 14px; cursor: pointer; border: none; border-radius: 10px;
+    font-weight: 500;
+  }
+  .btn-primary:hover { background: #b8894c; }
+  .btn-secondary {
+    background: #f5f0eb; color: #6a6058;
+    padding: 10px 28px; font-size: 14px; cursor: pointer; border: 1px solid #e6e0d8; border-radius: 10px;
+  }
+  .btn-secondary:hover { background: #ede8e2; }
+
+  /* Modal */
+  .modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.25); backdrop-filter: blur(4px);
+    z-index: 1000; justify-content: center; align-items: center; padding: 16px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: #ffffff; border: 1px solid #e6e0d8;
+    border-radius: 16px; padding: 0; width: 540px; max-width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+  }
+  .modal-header { padding: 22px 26px 0; font-size: 17px; font-weight: 600; color: #1c1a18; }
+  .modal-body { padding: 20px 26px; }
+  .modal-footer { padding: 0 26px 22px; display: flex; justify-content: flex-end; gap: 10px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 11px; font-weight: 500; color: #b8b0a8; margin-bottom: 5px; letter-spacing: 0.4px; text-transform: uppercase; }
+  .form-group input, .form-group select {
+    width: 100%; padding: 9px 12px;
+    background: #faf7f4; border: 1px solid #e6e0d8;
+    border-radius: 9px; font-size: 14px; color: #1c1a18;
+    transition: all 0.2s;
+  }
+  .form-group input::placeholder { color: #d4cdc5; }
+  .form-group input:focus, .form-group select:focus { outline: none; border-color: #c8a062; box-shadow: 0 0 0 3px rgba(200,160,98,0.1); background: #ffffff; }
+  .form-group select { background: #faf7f4; }
+  .form-group select option { background: #ffffff; color: #1c1a18; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .empty-state { text-align: center; padding: 24px 16px; color: #d4cdc5; font-size: 13px; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: #ffffff; border: 1px solid #e6e0d8;
+    color: #1c1a18; padding: 12px 24px; border-radius: 10px; font-size: 13px;
+    opacity: 0; transform: translateY(16px); transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+    z-index: 2000;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  .price-input { width: 80px; padding: 4px 6px; background: #faf7f4; border: 1px solid #e6e0d8; border-radius: 5px; font-size: 12px; color: #1c1a18; text-align: right; font-family: "SF Mono", "Courier New", monospace; }
+  .price-input:focus { outline: none; border-color: #c8a062; }
+
+  .update-status { font-size: 12px; color: #b8b0a8; padding: 8px 0; }
+  .update-status .ok { color: #4a8c7c; }
+  .update-status .err { color: #c45a5a; }
+
+  /* Footer */
+  .footer-link { color: #c4bdb5; cursor: pointer; border-bottom: 1px dashed #e0dad4; }
+  .footer-link:hover { color: #8a7f74; }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    body { padding: 12px; }
+    .header { padding: 16px 18px; }
+    .header h1 { font-size: 18px; }
+    .header-right .btn { font-size: 11px; padding: 5px 10px; }
+    .header-right .last-update { font-size: 11px; width: 100%; text-align: center; order: 10; margin-top: 4px; }
+    .summary { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .summary-card { padding: 14px 16px; }
+    .summary-card .value { font-size: 18px; }
+    .summary-card .sub { font-size: 10px; }
+    .chart-section { padding: 16px 18px; }
+    .chart-title { font-size: 14px; }
+    .chart-wrap { flex-direction: column; align-items: stretch; }
+    .chart-canvas-wrap { text-align: center; }
+    #industryChart { width: 240px; height: 240px; }
+    .chart-legend { min-width: unset; }
+    .market-body { padding: 12px 16px; }
+    .market-header { padding: 12px 16px; }
+    .stock-table { font-size: 12px; min-width: 580px; }
+    .stock-table thead th, .stock-table tbody td { padding: 8px 5px; }
+    .account-cash { gap: 12px; padding: 8px 12px; }
+    .account-cash .item { font-size: 11px; }
+    .form-row { grid-template-columns: 1fr; }
+    .modal { width: 100%; border-radius: 12px; }
+    .modal-body { padding: 16px 18px; }
+    .toast { left: 16px; right: 16px; bottom: 16px; text-align: center; }
+  }
+  @media (max-width: 400px) {
+    .summary { grid-template-columns: 1fr; }
+    .header-right .btn { font-size: 10px; padding: 4px 8px; }
+    #industryChart { width: 200px; height: 200px; }
+    .stock-table { min-width: 500px; }
+  }
+
+  /* Password Lock */
+  .password-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: #f5f0eb;
+    z-index: 9999;
+    display: flex; justify-content: center; align-items: center;
+    padding: 24px;
+    transition: opacity 0.5s ease;
+  }
+  .password-overlay.hidden { opacity: 0; pointer-events: none; }
+  .password-card {
+    background: #ffffff;
+    border: 1px solid #e6e0d8;
+    border-radius: 20px;
+    padding: 40px 36px 32px;
+    width: 380px;
+    max-width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+  .password-icon { font-size: 36px; color: #c8a062; margin-bottom: 12px; }
+  .password-title { font-size: 22px; font-weight: 600; color: #1c1a18; margin-bottom: 8px; }
+  .password-desc { font-size: 13px; color: #b8b0a8; margin-bottom: 24px; }
+  .password-input {
+    width: 100%; padding: 12px 16px;
+    background: #faf7f4; border: 1px solid #e6e0d8;
+    border-radius: 12px; font-size: 16px; color: #1c1a18;
+    text-align: center; outline: none;
+    transition: all 0.2s; letter-spacing: 2px;
+  }
+  .password-input:focus { border-color: #c8a062; box-shadow: 0 0 0 3px rgba(200,160,98,0.1); background: #ffffff; }
+  .password-input::placeholder { letter-spacing: 0; }
+  .password-error { font-size: 12px; color: #c45a5a; margin-top: 8px; min-height: 20px; }
+  .password-btn { margin-top: 16px; width: 100%; }
+  .password-sub { font-size: 11px; color: #d4cdc5; margin-top: 16px; }
+</style>
+</head>
+<body>
+<!-- Password Lock -->
+<div class="password-overlay" id="passwordOverlay">
+  <div class="password-card">
+    <div class="password-icon">◈</div>
+    <h2 class="password-title" id="pwdTitle">输入密码</h2>
+    <p class="password-desc" id="pwdDesc">请输入访问密码</p>
+    <input type="password" class="password-input" id="passwordInput" placeholder="请输入密码" autocomplete="off">
+    <div class="password-error" id="passwordError"></div>
+    <button class="btn btn-primary password-btn" onclick="handlePasswordSubmit()">确认</button>
+    <div class="password-sub" id="passwordSub"></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="header">
+    <div>
+      <h1>投资组合 <span>持仓管理</span></h1>
+      <div class="header-sub">港股 · A股（海通 / 东莞）</div>
+    </div>
+    <div class="header-right">
+      <span class="last-update" id="updateTime">本地</span>
+      <button class="btn btn-refresh" onclick="refreshPrices()">⟳ 行情</button>
+      <button class="btn btn-add" onclick="showAddModal()">＋ 添加</button>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="summary-card"><div class="label">总市值 (CNY)</div><div class="value" id="totalMv">¥0.00</div></div>
+    <div class="summary-card"><div class="label">总盈亏</div><div class="value" id="totalPnl">¥0.00</div></div>
+    <div class="summary-card">
+      <div class="label">总现金</div>
+      <div class="value neutral" id="totalCash">¥0.00</div>
+      <div class="sub" id="cashBreakdown">人民币 ¥0.00 &nbsp;·&nbsp; 港币 HK$0.00</div>
+    </div>
+    <div class="summary-card"><div class="label">现金占比</div><div class="value neutral" id="cashRatio">0.00%</div></div>
+  </div>
+
+  <!-- 行业分布 -->
+  <div class="chart-section">
+    <div class="chart-title">行业分布（申万一级 · 按总市值）</div>
+    <div class="chart-wrap">
+      <div class="chart-canvas-wrap">
+        <canvas id="industryChart" width="300" height="300"></canvas>
+      </div>
+      <div class="chart-legend" id="industryLegend"></div>
+    </div>
+  </div>
+
+  <!-- 港股 -->
+  <div class="market-section">
+    <div class="market-header" onclick="toggleSection('hk')">
+      <div class="left"><span class="badge badge-hk">港股</span><span class="count" id="count-hk">0 只</span></div>
+      <span class="arrow" id="arrow-hk">▼</span>
+    </div>
+    <div class="market-body" id="body-hk">
+      <div class="sub-account">
+        <div class="sub-account-title">富途证券</div>
+        <div id="table-hk-futu"><div class="empty-state"><p>暂无港股持仓</p></div></div>
+        <div class="account-cash" id="cash-hk-futu"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- A股 -->
+  <div class="market-section">
+    <div class="market-header" onclick="toggleSection('a')">
+      <div class="left"><span class="badge badge-a">A股</span><span class="count" id="count-a">0 只</span></div>
+      <span class="arrow" id="arrow-a">▼</span>
+    </div>
+    <div class="market-body" id="body-a">
+      <div class="sub-account">
+        <div class="sub-account-title">海通证券</div>
+        <div id="table-a-haitong_hk" style="margin-bottom:10px;"><div class="empty-state"><p>暂无持仓</p></div></div>
+        <div id="table-a-haitong_a"><div class="empty-state"><p>暂无持仓</p></div></div>
+        <div class="account-cash" id="cash-a-haitong"></div>
+      </div>
+      <div class="sub-account" style="margin-top:20px;">
+        <div class="sub-account-title">东莞证券</div>
+        <div id="table-a-dongguan"><div class="empty-state"><p>暂无持仓</p></div></div>
+        <div class="account-cash" id="cash-a-dongguan"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 美股 -->
+  <div class="market-section">
+    <div class="market-header" onclick="toggleSection('us')">
+      <div class="left"><span class="badge badge-us">美股</span><span class="count" id="count-us">0 只</span></div>
+      <span class="arrow" id="arrow-us">▼</span>
+    </div>
+    <div class="market-body" id="body-us">
+      <div id="table-us"><div class="empty-state"><p>暂无美股持仓</p></div></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:16px;color:#d4cdc5;font-size:12px;letter-spacing:0.3px;">
+    数据保存在浏览器本地 ·
+    <span class="footer-link" onclick="showShareInfo()">分享</span>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header" id="modalTitle">添加股票</div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>市场</label>
+        <select id="formMarket" onchange="onMarketChange()">
+          <option value="hk">港股</option>
+          <option value="us">美股</option>
+          <option value="a">A股</option>
+        </select>
+      </div>
+      <div class="form-group" id="formAccountGroup">
+        <label>账户</label>
+        <select id="formAccount">
+          <option value="futu">富途证券</option>
+          <option value="haitong_hk">海通-港股通</option>
+          <option value="haitong_a">海通-A股</option>
+          <option value="dongguan">东莞证券</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>股票名称</label><input type="text" id="formName" placeholder="如：腾讯控股"></div>
+        <div class="form-group"><label>股票代码</label><input type="text" id="formCode" placeholder="如：0700.HK / 603087"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>买入成本价</label><input type="number" id="formCost" step="0.001" placeholder="0.000"></div>
+        <div class="form-group"><label>持仓数量（股）</label><input type="number" id="formShares" step="1" placeholder="0"></div>
+      </div>
+      <div class="form-group"><label>最新收盘价</label><input type="number" id="formPrice" step="0.001" placeholder="0.000"></div>
+      <div class="form-group"><label>行业（申万一级）</label><input type="text" id="formIndustry" placeholder="如：传媒、食品饮料、医药生物"></div>
+      <div class="form-group"><label>备注（可选）</label><input type="text" id="formNote" placeholder=""></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="saveStock()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Price Update Modal -->
+<div class="modal-overlay" id="priceModal">
+  <div class="modal" style="width:640px;">
+    <div class="modal-header" id="priceModalTitle">批量更新收盘价</div>
+    <div class="modal-body">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <div class="update-status" id="updateStatus">点击按钮自动获取 or 手动修改</div>
+        <button class="btn btn-refresh" onclick="doApiUpdate()" id="apiUpdateBtn">⟳ 从网络获取</button>
+      </div>
+      <div id="priceEditArea"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closePriceModal()">取消</button>
+      <button class="btn btn-primary" onclick="savePriceUpdates()">确认更新</button>
+    </div>
+  </div>
+</div>
+
+<!-- Share Modal -->
+<div class="modal-overlay" id="shareModal">
+  <div class="modal" style="width:460px;">
+    <div class="modal-header">分享此页面</div>
+    <div class="modal-body" style="font-size:13px;line-height:1.7;color:#6a6058;">
+      <p style="margin-bottom:12px;">几种分享方式：</p>
+      <div style="padding:12px 16px;background:#faf7f4;border-radius:10px;margin-bottom:10px;">
+        <div style="font-weight:600;color:#c8a062;margin-bottom:4px;">① OneDrive 共享（推荐）</div>
+        <p style="color:#8a7f74;">文件在 OneDrive 文件夹中。右键 → "共享" → 输入对方邮箱，设置仅查看。</p>
+      </div>
+      <div style="padding:12px 16px;background:#faf7f4;border-radius:10px;margin-bottom:10px;">
+        <div style="font-weight:600;color:#4a8c7c;margin-bottom:4px;">② GitHub 私有仓库 Pages</div>
+        <p style="color:#8a7f74;">上传到私有仓库启用 Pages，仅 collaborators 可见。</p>
+      </div>
+      <div style="padding:12px 16px;background:#faf7f4;border-radius:10px;">
+        <div style="font-weight:600;color:#b87a6a;margin-bottom:4px;">③ Vercel / Netlify 密码保护</div>
+        <p style="color:#8a7f74;">可设访问密码，如需配置告诉我就好。</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="document.getElementById('shareModal').classList.remove('active')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let stocks = [];
+let editingId = null;
+const STORAGE_KEY = 'stock_portfolio_data';
+const SINA_CORS_PROXIES = [
+  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+];
+
+const ACCOUNT_META = {
+  futu:        { label:'富途证券',  market:'hk', parentLabel:'富途证券', cash:74989.36, currency:'HKD' },
+  haitong_hk:  { label:'海通-港股通', market:'a', parentLabel:'海通证券', cash:5242.25,  currency:'CNY' },
+  haitong_a:   { label:'海通-A股',   market:'a', parentLabel:'海通证券', cash:5242.25,  currency:'CNY' },
+  dongguan:    { label:'东莞证券',   market:'a', parentLabel:'东莞证券', cash:31369.88, currency:'CNY' },
+};
+
+const CNY_RATE = { hk: 0.92, us: 7.24, a: 1 };
+
+const PIE_COLORS = [
+  '#d4a056','#d16b6b','#5a9e8e','#b8894c','#8f7a6a','#c47a5a',
+  '#6a8fa8','#b89a7a','#7a9a8a','#c49a6a','#7a6a5a','#8a9a7a'
+];
+
+const DEFAULT_DATA = [
+  { id:'hk_02400', market:'hk', account:'futu', name:'心动公司', code:'02400', cost:50.85, shares:2200, price:73.9, industry:'传媒', note:'' },
+  { id:'hk_09992', market:'hk', account:'futu', name:'泡泡玛特', code:'09992', cost:256.2, shares:200, price:254.6, industry:'轻工制造', note:'' },
+  { id:'hk_03690', market:'hk', account:'futu', name:'美团-W', code:'03690', cost:115.785, shares:1000, price:98.5, industry:'社会服务', note:'' },
+  { id:'hk_00880', market:'hk', account:'futu', name:'澳博控股', code:'00880', cost:3.031, shares:14000, price:2.77, industry:'社会服务', note:'' },
+  { id:'ht_00700', market:'a', account:'haitong_hk', name:'腾讯控股', code:'00700', cost:497.437, shares:200, price:474.4, industry:'传媒', note:'港股通' },
+  { id:'ht_02020', market:'a', account:'haitong_hk', name:'安踏体育', code:'02020', cost:80, shares:600, price:74.9, industry:'纺织服饰', note:'港股通' },
+  { id:'ht_09992b', market:'a', account:'haitong_hk', name:'泡泡玛特', code:'09992', cost:202.457, shares:400, price:147.9, industry:'轻工制造', note:'港股通' },
+  { id:'ht_603087', market:'a', account:'haitong_a', name:'甘李药业', code:'603087', cost:-4.382, shares:400, price:65.15, industry:'医药生物', note:'' },
+  { id:'ht_513010', market:'a', account:'haitong_a', name:'恒生科技ETF', code:'513010', cost:0.778, shares:100900, price:0.662, industry:'基金', note:'' },
+  { id:'ht_000568', market:'a', account:'haitong_a', name:'泸州老窖', code:'000568', cost:107.739, shares:300, price:101.19, industry:'食品饮料', note:'' },
+  { id:'ht_000651', market:'a', account:'haitong_a', name:'格力电器', code:'000651', cost:43.182, shares:2100, price:39.11, industry:'家用电器', note:'' },
+  { id:'ht_688696', market:'a', account:'haitong_a', name:'极米科技', code:'688696', cost:103.822, shares:1000, price:90.85, industry:'电子', note:'' },
+  { id:'ht_516570', market:'a', account:'haitong_a', name:'石化ETF', code:'516570', cost:1.095, shares:23400, price:1.114, industry:'基金', note:'' },
+  { id:'ht_515220', market:'a', account:'haitong_a', name:'煤炭ETF', code:'515220', cost:1.203, shares:21100, price:1.267, industry:'基金', note:'' },
+  { id:'ht_513050', market:'a', account:'haitong_a', name:'中概互联ETF', code:'513050', cost:1.591, shares:13500, price:1.272, industry:'基金', note:'' },
+  { id:'dg_603087', market:'a', account:'dongguan', name:'甘李药业', code:'603087', cost:10.958, shares:300, price:64.46, industry:'医药生物', note:'' },
+  { id:'dg_601828', market:'a', account:'dongguan', name:'美凯龙', code:'601828', cost:2.661, shares:11500, price:3.07, industry:'商贸零售', note:'' },
+  { id:'dg_603279', market:'a', account:'dongguan', name:'景津装备', code:'603279', cost:15.553, shares:1100, price:19.2, industry:'环保', note:'' },
+  { id:'dg_600585', market:'a', account:'dongguan', name:'海螺水泥', code:'600585', cost:21.22, shares:500, price:21.21, industry:'建筑材料', note:'' },
+  { id:'dg_513010', market:'a', account:'dongguan', name:'恒生科技ETF', code:'513010', cost:0.749, shares:57700, price:0.657, industry:'基金', note:'' },
+];
+
+/* ====== 密码锁 ====== */
+const PWD_KEY = 'stock_portfolio_pwd';
+
+function initPassword() {
+  const hasPwd = localStorage.getItem(PWD_KEY);
+  document.getElementById('pwdTitle').textContent = hasPwd ? '输入密码' : '设置密码';
+  document.getElementById('pwdDesc').textContent = hasPwd ? '请输入访问密码' : '首次使用，请设置一个访问密码';
+  document.getElementById('passwordInput').placeholder = hasPwd ? '请输入密码' : '请设置密码';
+  document.querySelector('.password-btn').textContent = hasPwd ? '确认' : '设置密码';
+  document.getElementById('passwordSub').textContent = hasPwd ? '' : '密码将保存在此设备浏览器中';
+  setTimeout(() => document.getElementById('passwordInput').focus(), 100);
+  document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') handlePasswordSubmit();
+  });
+}
+
+function handlePasswordSubmit() {
+  const input = document.getElementById('passwordInput');
+  const error = document.getElementById('passwordError');
+  const pwd = input.value.trim();
+  const stored = localStorage.getItem(PWD_KEY);
+
+  if (!stored) {
+    if (!pwd) { error.textContent = '请输入密码'; return; }
+    localStorage.setItem(PWD_KEY, btoa(pwd));
+    unlockApp();
+  } else {
+    try {
+      if (atob(stored) === pwd) { unlockApp(); }
+      else { error.textContent = '密码错误'; input.value = ''; input.focus(); }
+    } catch(e) { error.textContent = '验证失败'; }
+  }
+}
+
+function unlockApp() {
+  const overlay = document.getElementById('passwordOverlay');
+  overlay.classList.add('hidden');
+  setTimeout(() => { overlay.style.display = 'none'; startApp(); }, 500);
+}
+
+function startApp() {
+  try {
+    loadData();
+    renderAll();
+  } catch(e) {
+    console.error(e);
+    try {
+      if (!stocks || !stocks.length) stocks = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      renderAll();
+    } catch(e2) {}
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initPassword);
+
+function fmt(n, d) {
+  if (d === undefined) d = 2;
+  try {
+    return Number(n).toLocaleString('zh-CN', { minimumFractionDigits: d, maximumFractionDigits: d });
+  } catch(e) {
+    return Number(n).toFixed(d);
+  }
+}
+
+/* ====== 数据加载 & 迁移 ====== */
+function loadData() {
+  try {
+    const r = localStorage.getItem(STORAGE_KEY);
+    if (r) {
+      stocks = JSON.parse(r);
+      migrateOldData();
+    } else {
+      stocks = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      saveData();
+    }
+  } catch(e) { stocks = JSON.parse(JSON.stringify(DEFAULT_DATA)); saveData(); }
+}
+
+function saveData() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(stocks)); } catch(e) {} }
+
+function migrateOldData() {
+  const needs = stocks.some(s => s.account === 'haitong');
+  // Always rebuild industry from DEFAULT_DATA
+  const idx = {};
+  DEFAULT_DATA.forEach(d => { idx[d.market + '|' + d.code] = d; });
+
+  let changed = false;
+  stocks.forEach(s => {
+    if (s.market === 'hk' && !s.account) { s.account = 'futu'; changed = true; }
+    if (s.account === 'haitong') {
+      const m = idx[s.market + '|' + s.code];
+      if (m && m.account !== 'haitong') { s.account = m.account; changed = true; }
+    }
+    const m = idx[s.market + '|' + s.code];
+    if (m) {
+      if (s.industry !== m.industry) { s.industry = m.industry; changed = true; }
+      if (s.name.length <= 2 && m.name.length > 2) { s.name = m.name; changed = true; }
+      if (s.note && s.note === m.name) { s.note = ''; changed = true; }
+      // 同步默认数据的成本价（如甘李药业改为负成本）
+      if (Math.abs(s.cost - m.cost) > 0.001) { s.cost = m.cost; changed = true; }
+    }
+  });
+
+  if (changed) { saveData(); renderAll(); }
+}
+
+function getStocks(market, account) {
+  if (market === 'a') return stocks.filter(s => s.market === 'a' && s.account === account);
+  if (account) return stocks.filter(s => s.market === market && s.account === account);
+  return stocks.filter(s => s.market === market);
+}
+
+function getTotalMvCNY() {
+  return stocks.reduce((s, x) => s + x.price * x.shares * (CNY_RATE[x.market]||1), 0);
+}
+
+/* ====== 行业饼图 ====== */
+function renderIndustryChart() {
+  try {
+  const canvas = document.getElementById('industryChart');
+  if (!canvas) { setTimeout(renderIndustryChart, 100); return; }
+  const wrap = canvas.parentElement;
+  const maxW = Math.min(wrap.clientWidth || 300, 300);
+  canvas.width = maxW; canvas.height = maxW;
+
+  const ctx = canvas.getContext('2d');
+  const legendEl = document.getElementById('industryLegend');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const indMap = {};
+  const indStocks = {};
+  stocks.forEach(s => {
+    const ind = s.industry || '其他';
+    const mv = s.price * s.shares * (CNY_RATE[s.market]||1);
+    indMap[ind] = (indMap[ind] || 0) + mv;
+    if (!indStocks[ind]) indStocks[ind] = [];
+    indStocks[ind].push(s.name);
+  });
+
+  const entries = Object.entries(indMap).sort((a, b) => b[1] - a[1]);
+  const total = entries.reduce((s, [,v]) => s + v, 0);
+  if (total === 0) return;
+
+  const cSize = canvas.width, cx = cSize/2, cy = cSize/2, r = cSize * 0.4;
+  let startAngle = -Math.PI / 2;
+
+  entries.forEach(([ind, value], i) => {
+    const angle = (value / total) * Math.PI * 2;
+    const color = PIE_COLORS[i % PIE_COLORS.length];
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, startAngle + angle);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+    if (angle > 0.15) {
+      const mid = startAngle + angle / 2;
+      const lr = r + cSize * 0.08;
+      const lx = cx + Math.cos(mid) * lr, ly = cy + Math.sin(mid) * lr;
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(mid) * r, cy + Math.sin(mid) * r);
+      ctx.lineTo(lx, ly);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = '#1c1a18';
+      ctx.font = Math.round(cSize * 0.036) + 'px "SF Mono", "Courier New", monospace';
+      ctx.textAlign = lx > cx ? 'left' : 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText((value / total * 100).toFixed(1) + '%', lx + (lx > cx ? 3 : -3), ly);
+    }
+    startAngle += angle;
+  });
+
+  // Center donut
+  const innerR = r * 0.42;
+  ctx.beginPath();
+  ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffffff';
+  ctx.fill();
+  ctx.fillStyle = '#1c1a18';
+  ctx.font = 'bold ' + Math.round(cSize * 0.055) + 'px "SF Mono", "Courier New", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(entries.length, cx, cy - cSize * 0.025);
+  ctx.font = Math.round(cSize * 0.03) + 'px "Microsoft YaHei", sans-serif';
+  ctx.fillStyle = '#b8b0a8';
+  ctx.fillText('行业', cx, cy + cSize * 0.055);
+
+  legendEl.innerHTML = entries.map(([ind, value], i) => {
+    const pct = (value / total * 100);
+    const names = (indStocks[ind] || []).join('、');
+    return `<div class="legend-item">
+      <span class="legend-dot" style="background:${PIE_COLORS[i % PIE_COLORS.length]}"></span>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="legend-label">${esc(ind)}</span>
+          <span class="legend-value">¥${fmt(value)}</span>
+          <span class="legend-pct">${fmt(pct)}%</span>
+        </div>
+        <div style="font-size:11px;color:#b8b0a8;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(names)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  } catch(e) { console.error('chart error:', e); }
+}
+
+/* ====== 渲染 ====== */
+function renderAll() {
+  renderTable('hk','futu');
+  renderTable('us');
+  renderTable('a','haitong_hk');
+  renderTable('a','haitong_a');
+  renderTable('a','dongguan');
+  updateCounts();
+  updateSummary();
+  updateCashDisplay();
+  renderIndustryChart();
+}
+
+function renderTable(market, account) {
+  let cid, list;
+  if (market === 'a') { cid = 'table-a-'+account; list = getStocks('a', account); }
+  else if (account) { cid = 'table-'+market+'-'+account; list = getStocks(market, account); }
+  else { cid = 'table-'+market; list = getStocks(market); }
+  const el = document.getElementById(cid);
+  if (!el) return;
+  if (!list.length) { el.innerHTML = '<div class="empty-state"><p>暂无持仓</p></div>'; return; }
+
+  // Sort by market value descending
+  list.sort((a, b) => (b.price * b.shares) - (a.price * a.shares));
+
+  const cur = market === 'us' ? '$' : (market === 'hk' ? 'HK$' : '¥');
+  const totalMvCNY = getTotalMvCNY();
+
+  let h = '<div class="stock-table-container"><table class="stock-table"><thead><tr>'
+    + '<th>股票</th><th>代码</th>'
+    + '<th class="text-right">成本价</th><th class="text-right">数量</th>'
+    + '<th class="text-right">市值</th>'
+    + '<th class="text-right">市值占比</th>'
+    + '<th class="text-right">盈亏</th>'
+    + '<th class="text-right">盈亏率</th><th>操作</th>'
+    + '</tr></thead><tbody>';
+
+  list.forEach(s => {
+    const vt = s.price * s.shares;
+    const ct = s.cost * s.shares;
+    const pnl = vt - ct;
+    const pr = ct > 0 ? (pnl/ct*100) : (pnl !== 0 ? (pnl/Math.abs(ct)*100) : 0);
+    const pc = pnl >= 0 ? 'up' : 'down';
+    const pct = totalMvCNY > 0 ? (vt * (CNY_RATE[market]||1) / totalMvCNY * 100) : 0;
+
+    h += `<tr>
+      <td><div class="stock-name">${esc(s.name)}</div></td>
+      <td><span class="stock-code">${esc(s.code)}</span></td>
+      <td class="text-right"><span class="price">${cur}${fmt(s.cost,3)}</span></td>
+      <td class="text-right">${s.shares.toLocaleString()}</td>
+      <td class="text-right"><span class="price">${cur}${fmt(vt)}</span></td>
+      <td class="text-right"><span class="profit">${fmt(pct)}%</span></td>
+      <td class="text-right profit ${pc}">${pnl>=0?'▲':'▼'} ${cur}${fmt(Math.abs(pnl))}</td>
+      <td class="text-right profit ${pc}">${pnl>=0?'+':''}${fmt(pr)}%</td>
+      <td><div class="actions">
+        <button class="btn btn-edit" onclick="showEditModal('${s.id}')">编辑</button>
+        <button class="btn btn-delete" onclick="deleteStock('${s.id}')">删除</button>
+      </div></td>
+    </tr>`;
+  });
+  h += '</tbody></table></div>';
+  el.innerHTML = h;
+}
+
+function updateCounts() {
+  ['hk','us','a'].forEach(m => {
+    const n = stocks.filter(s => s.market === m).length;
+    const e = document.getElementById('count-'+m);
+    if (e) e.textContent = n+' 只';
+  });
+}
+
+function updateSummary() {
+  let totalMv = 0, totalCost = 0;
+  stocks.forEach(s => {
+    const r = CNY_RATE[s.market]||1;
+    totalMv += s.price * s.shares * r;
+    totalCost += s.cost * s.shares * r;
+  });
+  const pnl = totalMv - totalCost;
+
+  document.getElementById('totalMv').textContent = '¥'+fmt(totalMv);
+  const pe = document.getElementById('totalPnl');
+  pe.textContent = (pnl>=0?'+':'')+'¥'+fmt(Math.abs(pnl));
+  pe.className = 'value '+(pnl>=0?'profit':'loss');
+
+  const cashHKD = ACCOUNT_META.futu.cash || 0;
+  const cashCNY = (ACCOUNT_META.haitong_hk.cash || 0) + (ACCOUNT_META.dongguan.cash || 0);
+  const cashTotalCNY = cashCNY + cashHKD * CNY_RATE.hk;
+
+  document.getElementById('totalCash').textContent = '¥'+fmt(cashTotalCNY);
+  document.getElementById('cashBreakdown').innerHTML =
+    '人民币 <span class="num">¥'+fmt(cashCNY)+'</span> &nbsp;·&nbsp; 港币 <span class="num">HK$'+fmt(cashHKD)+'</span>';
+
+  const totalAssets = totalMv + cashTotalCNY;
+  const cRatio = totalAssets > 0 ? (cashTotalCNY / totalAssets * 100) : 0;
+  document.getElementById('cashRatio').textContent = fmt(cRatio)+'%';
+
+  document.getElementById('updateTime').textContent = '更新: '+new Date().toLocaleString('zh-CN');
+}
+
+function updateCashDisplay() {
+  updateCashItem('hk-futu', ACCOUNT_META.futu, getStocks('hk','futu'));
+  const haitongCost = getStocks('a','haitong_hk').reduce((s,x) => s + x.cost*x.shares, 0)
+                   + getStocks('a','haitong_a').reduce((s,x) => s + x.cost*x.shares, 0);
+  updateCashItem('a-haitong', ACCOUNT_META.haitong_hk, null, haitongCost);
+  updateCashItem('a-dongguan', ACCOUNT_META.dongguan, getStocks('a','dongguan'));
+}
+
+function updateCashItem(elId, meta, stockList, precomputedCost) {
+  const el = document.getElementById('cash-'+elId);
+  if (!el) return;
+  const cash = meta.cash || 0;
+  const totalInv = precomputedCost !== undefined
+    ? precomputedCost
+    : (stockList ? stockList.reduce((s,x) => s + x.cost*x.shares, 0) : 0);
+  const total = totalInv + cash;
+  const ratio = total > 0 ? (cash / total * 100) : 0;
+  const sym = meta.currency === 'HKD' ? 'HK$' : '¥';
+  el.innerHTML = `
+    <span class="item"><span class="lbl">现金</span><span class="val">${sym}${fmt(cash)}</span></span>
+    <span class="item"><span class="lbl">持仓成本</span><span class="val">${sym}${fmt(totalInv)}</span></span>
+    <span class="item"><span class="lbl">现金占比</span><span class="val highlight">${fmt(ratio)}%</span></span>
+    <span class="item"><span class="lbl">总资产</span><span class="val">${sym}${fmt(total)}</span></span>`;
+}
+
+function toggleSection(m) {
+  const b = document.getElementById('body-'+m), a = document.getElementById('arrow-'+m);
+  a.classList.toggle('collapsed', b.classList.toggle('hidden'));
+}
+
+function showAddModal(market, account) {
+  editingId = null;
+  document.getElementById('modalTitle').textContent = '添加股票';
+  ['formName','formCode','formCost','formShares','formPrice','formIndustry','formNote'].forEach(id => document.getElementById(id).value='');
+  if (market) document.getElementById('formMarket').value = market;
+  if (account) document.getElementById('formAccount').value = account;
+  onMarketChange();
+  document.getElementById('modal').classList.add('active');
+}
+
+function showEditModal(id) {
+  const s = stocks.find(x => x.id === id);
+  if (!s) return;
+  editingId = id;
+  document.getElementById('modalTitle').textContent = '编辑股票';
+  document.getElementById('formMarket').value = s.market;
+  document.getElementById('formAccount').value = s.account||'futu';
+  document.getElementById('formName').value = s.name;
+  document.getElementById('formCode').value = s.code;
+  document.getElementById('formCost').value = s.cost;
+  document.getElementById('formShares').value = s.shares;
+  document.getElementById('formPrice').value = s.price;
+  document.getElementById('formIndustry').value = s.industry||'';
+  document.getElementById('formNote').value = s.note||'';
+  onMarketChange();
+  document.getElementById('modal').classList.add('active');
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('active'); editingId = null; }
+
+function onMarketChange() {
+  const m = document.getElementById('formMarket').value;
+  const g = document.getElementById('formAccountGroup');
+  const sel = document.getElementById('formAccount');
+  if (m === 'hk') {
+    g.style.display = 'block';
+    sel.innerHTML = '<option value="futu">富途证券</option>';
+  } else if (m === 'us') {
+    g.style.display = 'none';
+  } else {
+    g.style.display = 'block';
+    sel.innerHTML = '<option value="haitong_hk">海通-港股通</option><option value="haitong_a">海通-A股</option><option value="dongguan">东莞证券</option>';
+  }
+}
+
+function saveStock() {
+  const market = document.getElementById('formMarket').value;
+  const account = document.getElementById('formAccount').value;
+  const name = document.getElementById('formName').value.trim();
+  const code = document.getElementById('formCode').value.trim();
+  const cost = parseFloat(document.getElementById('formCost').value);
+  const shares = parseInt(document.getElementById('formShares').value);
+  const price = parseFloat(document.getElementById('formPrice').value);
+  const industry = document.getElementById('formIndustry').value.trim();
+  const note = document.getElementById('formNote').value.trim();
+  if (!name) return showToast('请输入股票名称');
+  if (!code) return showToast('请输入股票代码');
+  if (isNaN(cost)) return showToast('请输入有效成本价');
+  if (isNaN(shares)||shares<=0) return showToast('请输入有效持仓数量');
+  if (isNaN(price)||price<=0) return showToast('请输入有效收盘价');
+  if (editingId) {
+    const i = stocks.findIndex(s => s.id === editingId);
+    if (i>-1) stocks[i] = {...stocks[i], market, account, name, code, cost, shares, price, industry, note};
+    showToast('已更新');
+  } else {
+    stocks.push({ id:'s_'+Date.now()+'_'+Math.random().toString(36).slice(2,6), market, account, name, code, cost, shares, price, industry, note });
+    showToast('已添加');
+  }
+  saveData(); renderAll(); closeModal();
+}
+
+function deleteStock(id) {
+  if (!confirm('确定删除？')) return;
+  stocks = stocks.filter(s => s.id !== id);
+  saveData(); renderAll(); showToast('已删除');
+}
+
+function esc(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function showToast(m) {
+  const e = document.getElementById('toast');
+  e.textContent = m; e.classList.add('show');
+  clearTimeout(e._timer); e._timer = setTimeout(()=>e.classList.remove('show'), 2500);
+}
+function showShareInfo() { document.getElementById('shareModal').classList.add('active'); }
+
+/* ====== 收盘价更新（东方财富 + 新浪双接口） ====== */
+function refreshPrices() {
+  document.getElementById('priceModalTitle').textContent = '批量更新收盘价';
+  document.getElementById('updateStatus').innerHTML = '点击获取 or 手动修改后确认';
+  document.getElementById('apiUpdateBtn').disabled = false;
+  document.getElementById('apiUpdateBtn').textContent = '⟳ 从网络获取';
+
+  let html = '';
+  [
+    { label:'港股-富途', list: getStocks('hk','futu'), cur:'HK$' },
+    { label:'港股通-海通', list: getStocks('a','haitong_hk'), cur:'¥' },
+    { label:'A股-海通', list: getStocks('a','haitong_a'), cur:'¥' },
+    { label:'A股-东莞', list: getStocks('a','dongguan'), cur:'¥' },
+  ].forEach(g => {
+    if (!g.list.length) return;
+    html += '<div style="margin-bottom:14px;padding:10px 12px;background:#faf7f4;border-radius:8px;">'
+      + '<div style="font-size:12px;font-weight:500;color:#6a6058;margin-bottom:8px;">'+esc(g.label)+'</div>';
+    g.list.forEach(s => {
+      html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">'
+        + '<span style="font-size:12px;">'+esc(s.name)+' <span class="stock-code">'+esc(s.code)+'</span></span>'
+        + '<span>'+g.cur+' <input class="price-input" type="number" step="0.001" data-id="'+s.id+'" value="'+s.price+'"></span>'
+        + '</div>';
+    });
+    html += '</div>';
+  });
+  document.getElementById('priceEditArea').innerHTML = html;
+  document.getElementById('priceModal').classList.add('active');
+}
+
+function closePriceModal() { document.getElementById('priceModal').classList.remove('active'); }
+
+function savePriceUpdates() {
+  let count = 0;
+  document.querySelectorAll('#priceEditArea .price-input').forEach(inp => {
+    const id = inp.dataset.id, val = parseFloat(inp.value);
+    if (id && !isNaN(val) && val > 0) {
+      const s = stocks.find(x => x.id === id);
+      if (s) { s.price = val; count++; }
+    }
+  });
+  saveData(); renderAll(); closePriceModal();
+  showToast('已更新 '+count+' 只股票收盘价');
+}
+
+async function doApiUpdate() {
+  const btn = document.getElementById('apiUpdateBtn');
+  btn.disabled = true; btn.textContent = '获取中...';
+  document.getElementById('updateStatus').innerHTML = '正在获取最新行情...';
+
+  // Build code maps for both APIs
+  const sinaMap = [];
+  const eastSecids = [];
+
+  getStocks('hk','futu').forEach(s => {
+    sinaMap.push({ id: s.id, code: 'hk'+s.code });
+    eastSecids.push({ id: s.id, secid: '116.'+s.code });
+  });
+  getStocks('a','haitong_hk').forEach(s => {
+    sinaMap.push({ id: s.id, code: 'hk'+s.code });
+    eastSecids.push({ id: s.id, secid: '116.'+s.code });
+  });
+  [...getStocks('a','haitong_a'), ...getStocks('a','dongguan')].forEach(s => {
+    const prefix = (s.code.startsWith('0')||s.code.startsWith('3')) ? 'sz' : 'sh';
+    sinaMap.push({ id: s.id, code: prefix + s.code });
+    eastSecids.push({ id: s.id, secid: (s.code.startsWith('0')||s.code.startsWith('3')?'0.':'1.') + s.code });
+  });
+
+  if (!sinaMap.length) { btn.disabled = false; btn.textContent = '⟳ 获取'; return; }
+
+  let success = 0, fail = 0;
+
+  // Try East Money API first (better CORS support)
+  try {
+    const secids = eastSecids.map(x => x.secid).join(',');
+    const r = await fetch('https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&fields=f2,f12,f14&secids='+secids);
+    if (r.ok) {
+      const data = await r.json();
+      if (data && data.data && data.data.diff) {
+        data.data.diff.forEach(item => {
+          const code = String(item.f12);
+          const match = eastSecids.find(x => x.secid.endsWith(code));
+          if (match && item.f2) {
+            match.newPrice = item.f2;
+            success++;
+          }
+        });
+      }
+    }
+  } catch(e) { /* fall through to Sina */ }
+
+  // If East Money fails, try Sina
+  if (success === 0) {
+    try {
+      const codes = sinaMap.map(x => x.code).join(',');
+      const r = await fetch('https://hq.sinajs.cn/list='+codes, { headers: { 'Referer': 'https://finance.sina.com.cn' } });
+      if (r.ok) {
+        const result = parseSina(await r.text(), sinaMap);
+        success = result.success; fail = result.fail;
+      }
+    } catch(e) {
+      // Try proxies
+      for (const fn of SINA_CORS_PROXIES) {
+        try {
+          const codes = sinaMap.map(x => x.code).join(',');
+          const r = await fetch(fn('https://hq.sinajs.cn/list='+codes));
+          if (r.ok) { const result = parseSina(await r.text(), sinaMap); success = result.success; fail = result.fail; break; }
+        } catch(e2) { continue; }
+      }
+    }
+  }
+
+  if (success > 0) {
+    eastSecids.concat(sinaMap).forEach(item => {
+      const inp = document.querySelector('#priceEditArea .price-input[data-id="'+item.id+'"]');
+      if (inp && item.newPrice !== undefined) inp.value = item.newPrice;
+    });
+    document.getElementById('updateStatus').innerHTML =
+      '<span class="ok">✔ 成功获取 '+success+' 只'+(fail?', '+fail+' 只失败':'')+'</span>';
+  } else {
+    document.getElementById('updateStatus').innerHTML = '<span class="err">⚠ 获取失败，可手动修改后确认</span>';
+  }
+  btn.disabled = false; btn.textContent = success ? '⟳ 重新获取' : '⟳ 重试';
+}
+
+function parseSina(text, codeMap) {
+  let s = 0, f = 0;
+  text.split('\n').forEach(line => {
+    const m = line.match(/var hq_str_(\w+)="([^"]+)"/);
+    if (!m) return;
+    const rc = m[1], fields = m[2].split(',');
+    const match = codeMap.find(x => x.code === rc);
+    if (!match) return;
+    const price = parseFloat(fields[rc.startsWith('hk')?1:3]);
+    if (!isNaN(price) && price > 0) { match.newPrice = price; s++; } else f++;
+  });
+  return { success: s, fail: f };
+}
+
+document.getElementById('modal').addEventListener('click', function(e) { if (e.target===this) closeModal(); });
+document.getElementById('priceModal').addEventListener('click', function(e) { if (e.target===this) closePriceModal(); });
+document.getElementById('shareModal').addEventListener('click', function(e) { if (e.target===this) this.classList.remove('active'); });
+document.addEventListener('keydown', e => { if (e.key==='Escape') { closeModal(); closePriceModal(); document.getElementById('shareModal').classList.remove('active'); } });
+window.addEventListener('resize', () => { if (stocks.length) renderIndustryChart(); });
+</script>
+</body>
+</html>

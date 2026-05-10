@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "name": "stock-portfolio-app",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/stock_portfolio.html" }
+  ]
+}
