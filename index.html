@@ -262,11 +262,24 @@
     .modal-body { padding: 16px 18px; }
     .toast { left: 16px; right: 16px; bottom: 16px; text-align: center; }
   }
-  @media (max-width: 400px) {
+  @media (max-width: 500px) {
     .summary { grid-template-columns: 1fr; }
     .header-right .btn { font-size: 10px; padding: 4px 8px; }
     #industryChart { width: 200px; height: 200px; }
-    .stock-table { min-width: 500px; }
+    /* 手机端隐藏代码和市值占比列 */
+    .stock-table thead th:nth-child(2),
+    .stock-table thead th:nth-child(6),
+    .stock-table tbody td:nth-child(2),
+    .stock-table tbody td:nth-child(6) { display: none; }
+    .stock-table { min-width: 0; font-size: 11px; }
+    .stock-table thead th, .stock-table tbody td { padding: 5px 3px; }
+    .stock-table tbody td { white-space: nowrap; }
+    .stock-table .stock-name { font-size: 11px; }
+    .stock-table .price { font-size: 11px; }
+    .btn { padding: 3px 8px; font-size: 10px; }
+    .actions { gap: 2px; }
+    .account-cash { gap: 8px; padding: 6px 10px; flex-direction: column; }
+    .account-cash .item { font-size: 10px; }
   }
 
   /* Password Lock */
@@ -473,19 +486,17 @@
   <div class="modal" style="width:460px;">
     <div class="modal-header">分享此页面</div>
     <div class="modal-body" style="font-size:13px;line-height:1.7;color:#6a6058;">
-      <p style="margin-bottom:12px;">几种分享方式：</p>
+      <p style="margin-bottom:12px;">将此链接分享给他人：</p>
+      <div style="padding:14px 16px;background:#f5f0eb;border-radius:10px;margin-bottom:14px;word-break:break-all;font-size:12px;color:#8a7f74;text-align:center;">
+        https://fangdayi33-arch.github.io/stock-portfolio/
+      </div>
+      <p style="margin-bottom:10px;"><strong style="color:#c8a062;">⚠ 注意：</strong>每个人的数据保存在各自的浏览器中。</p>
       <div style="padding:12px 16px;background:#faf7f4;border-radius:10px;margin-bottom:10px;">
-        <div style="font-weight:600;color:#c8a062;margin-bottom:4px;">① OneDrive 共享（推荐）</div>
-        <p style="color:#8a7f74;">文件在 OneDrive 文件夹中。右键 → "共享" → 输入对方邮箱，设置仅查看。</p>
+        <p style="color:#8a7f74;font-size:12px;">
+          你编辑的股票持仓数据只存在你手机的 localStorage 中。别人打开这个链接看到的是默认模板，需要自己添加数据。不是实时同步的。
+        </p>
       </div>
-      <div style="padding:12px 16px;background:#faf7f4;border-radius:10px;margin-bottom:10px;">
-        <div style="font-weight:600;color:#4a8c7c;margin-bottom:4px;">② GitHub 私有仓库 Pages</div>
-        <p style="color:#8a7f74;">上传到私有仓库启用 Pages，仅 collaborators 可见。</p>
-      </div>
-      <div style="padding:12px 16px;background:#faf7f4;border-radius:10px;">
-        <div style="font-weight:600;color:#b87a6a;margin-bottom:4px;">③ Vercel / Netlify 密码保护</div>
-        <p style="color:#8a7f74;">可设访问密码，如需配置告诉我就好。</p>
-      </div>
+      <p style="color:#b8b0a8;font-size:12px;">如果需要大家看到同一份数据，后续可以加后端数据库支持。</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="document.getElementById('shareModal').classList.remove('active')">关闭</button>
@@ -595,6 +606,8 @@ function startApp() {
 }
 
 document.addEventListener('DOMContentLoaded', initPassword);
+
+function isMobile() { return window.innerWidth <= 500; }
 
 function fmt(n, d) {
   if (d === undefined) d = 2;
@@ -775,6 +788,9 @@ function renderTable(market, account) {
 
   const cur = market === 'us' ? '$' : (market === 'hk' ? 'HK$' : '¥');
   const totalMvCNY = getTotalMvCNY();
+  const mobile = isMobile();
+  const costDec = mobile ? 2 : 3;
+  const mvDec = mobile ? 0 : 2;
 
   let h = '<div class="stock-table-container"><table class="stock-table"><thead><tr>'
     + '<th>股票</th><th>代码</th>'
@@ -796,9 +812,9 @@ function renderTable(market, account) {
     h += `<tr>
       <td><div class="stock-name">${esc(s.name)}</div></td>
       <td><span class="stock-code">${esc(s.code)}</span></td>
-      <td class="text-right"><span class="price">${cur}${fmt(s.cost,3)}</span></td>
+      <td class="text-right"><span class="price">${cur}${fmt(s.cost, costDec)}</span></td>
       <td class="text-right">${s.shares.toLocaleString()}</td>
-      <td class="text-right"><span class="price">${cur}${fmt(vt)}</span></td>
+      <td class="text-right"><span class="price">${cur}${fmt(vt, mvDec)}</span></td>
       <td class="text-right"><span class="profit">${fmt(pct)}%</span></td>
       <td class="text-right profit ${pc}">${pnl>=0?'▲':'▼'} ${cur}${fmt(Math.abs(pnl))}</td>
       <td class="text-right profit ${pc}">${pnl>=0?'+':''}${fmt(pr)}%</td>
