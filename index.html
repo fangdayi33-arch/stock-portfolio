@@ -741,44 +741,55 @@ async function syncToGithub() {
 
 /* ====== 数据加载 & 迁移 ====== */
 async function loadData() {
-  // Try GitHub first
+  // 先从本地加载，保证刷新不丢数据
+  let loadedFromLocal = false;
+  try {
+    const r = localStorage.getItem(STORAGE_KEY);
+    if (r) {
+      const localData = JSON.parse(r);
+      if (Array.isArray(localData)) {
+        stocks = localData;
+      } else {
+        stocks = localData.stocks || [];
+        if (localData.cash) saveCashData(localData.cash);
+      }
+      loadedFromLocal = true;
+    }
+  } catch(e) {}
+
+  // 再尝试从 GitHub 拉最新数据（覆盖本地，但保留现金）
   try {
     const ghData = await loadFromGithub();
+    const oldCash = getCashData();
     if (Array.isArray(ghData)) {
       stocks = ghData;
     } else {
       stocks = ghData.stocks || [];
-      if (ghData.cash) saveCashData(ghData.cash);
+      if (ghData.cash) saveCashData({...oldCash, ...ghData.cash});
     }
     migrateOldData();
+    saveData();
     setSyncStatus('ok');
     return;
-  } catch(e) { /* fall through */ }
+  } catch(e) { /* GitHub 不可用 */ }
 
-  // Fall back to localStorage
-  try {
-    const r = localStorage.getItem(STORAGE_KEY);
-    if (r) {
-      stocks = JSON.parse(r);
-      migrateOldData();
-      setSyncStatus('offline');
-      // Try to push local data to GitHub if token exists
-      if (getGithubToken()) { syncToGithub(); }
-    } else {
-      stocks = JSON.parse(JSON.stringify(DEFAULT_DATA));
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(stocks));
-      if (getGithubToken()) { syncToGithub(); }
-      else { setSyncStatus('offline'); }
-    }
-  } catch(e) {
-    stocks = JSON.parse(JSON.stringify(DEFAULT_DATA));
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(stocks));
+  // GitHub 失败：用本地数据
+  if (loadedFromLocal) {
+    migrateOldData();
     setSyncStatus('offline');
+    if (getGithubToken()) syncToGithub();
+    return;
   }
+
+  // 首次使用，初始化默认数据
+  stocks = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(stocks));
+  setSyncStatus('offline');
+  if (getGithubToken()) syncToGithub();
 }
 
 function saveData() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(stocks)); } catch(e) {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ stocks, cash: getCashData() })); } catch(e) {}
   syncToGithub();
 }
 
