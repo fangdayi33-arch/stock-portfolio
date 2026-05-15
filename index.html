@@ -677,12 +677,16 @@ function saveGithubToken() {
 }
 
 async function loadFromGithub() {
-  const resp = await fetch(GITHUB_API_URL);
+  // 用 raw URL 加载，兼容性更好
+  const resp = await fetch(GITHUB_RAW_URL + '?t=' + Date.now());
   if (!resp.ok) throw new Error('GitHub fetch: ' + resp.status);
   const data = await resp.json();
-  githubSha = data.sha;
-  const content = decodeURIComponent(escape(atob(data.content)));
-  return JSON.parse(content);
+  // 同时获取 SHA 以备写入
+  try {
+    const r2 = await fetch(GITHUB_API_URL);
+    if (r2.ok) { const d = await r2.json(); githubSha = d.sha; }
+  } catch(e) {}
+  return data;
 }
 
 async function saveToGithub(data) {
