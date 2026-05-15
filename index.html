@@ -1143,6 +1143,7 @@ function editCash(accountKey, sym) {
   if (isNaN(num) || num < 0) return showToast('请输入有效金额');
   cashData[accountKey] = num;
   saveCashData(cashData);
+  saveData(); // 同步到 GitHub
   renderAll();
   showToast('现金已更新');
 }
