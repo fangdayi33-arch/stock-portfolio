@@ -567,7 +567,7 @@ const DEFAULT_DATA = [
   { id:'ht_09992b', market:'a', account:'haitong_hk', name:'泡泡玛特', code:'09992', cost:202.457, shares:400, price:147.9, industry:'轻工制造', note:'港股通' },
   { id:'ht_603087', market:'a', account:'haitong_a', name:'甘李药业', code:'603087', cost:-4.382, shares:400, price:65.15, industry:'医药生物', note:'' },
   { id:'ht_513010', market:'a', account:'haitong_a', name:'恒生科技ETF', code:'513010', cost:0.778, shares:100900, price:0.662, industry:'基金', note:'' },
-  { id:'ht_000568', market:'a', account:'haitong_a', name:'泸州老窖', code:'000568', cost:107.739, shares:300, price:101.19, industry:'食品饮料', note:'' },
+  { id:'ht_000568', market:'a', account:'haitong_a', name:'泸州老窖', code:'000568', cost:103.657, shares:300, price:101.19, industry:'食品饮料', note:'' },
   { id:'ht_000651', market:'a', account:'haitong_a', name:'格力电器', code:'000651', cost:43.182, shares:2100, price:39.11, industry:'家用电器', note:'' },
   { id:'ht_688696', market:'a', account:'haitong_a', name:'极米科技', code:'688696', cost:103.822, shares:1000, price:90.85, industry:'电子', note:'' },
   { id:'ht_516570', market:'a', account:'haitong_a', name:'石化ETF', code:'516570', cost:1.095, shares:23400, price:1.114, industry:'基金', note:'' },
@@ -576,7 +576,7 @@ const DEFAULT_DATA = [
   { id:'dg_603087', market:'a', account:'dongguan', name:'甘李药业', code:'603087', cost:10.958, shares:300, price:64.46, industry:'医药生物', note:'' },
   { id:'dg_601828', market:'a', account:'dongguan', name:'美凯龙', code:'601828', cost:2.661, shares:11500, price:3.07, industry:'商贸零售', note:'' },
   { id:'dg_603279', market:'a', account:'dongguan', name:'景津装备', code:'603279', cost:15.553, shares:1100, price:19.2, industry:'环保', note:'' },
-  { id:'dg_600585', market:'a', account:'dongguan', name:'海螺水泥', code:'600585', cost:21.22, shares:500, price:21.21, industry:'建筑材料', note:'' },
+  { id:'dg_600585', market:'a', account:'dongguan', name:'海螺水泥', code:'600585', cost:20.900, shares:500, price:21.21, industry:'建筑材料', note:'' },
   { id:'dg_513010', market:'a', account:'dongguan', name:'恒生科技ETF', code:'513010', cost:0.749, shares:57700, price:0.657, industry:'基金', note:'' },
 ];
 
@@ -1055,8 +1055,8 @@ function showAddModal(market, account) {
   document.getElementById('modalTitle').textContent = '添加股票';
   ['formName','formCode','formCost','formShares','formPrice','formIndustry','formNote'].forEach(id => document.getElementById(id).value='');
   if (market) document.getElementById('formMarket').value = market;
-  if (account) document.getElementById('formAccount').value = account;
   onMarketChange();
+  if (account) document.getElementById('formAccount').value = account;
   document.getElementById('modal').classList.add('active');
 }
 
@@ -1066,7 +1066,6 @@ function showEditModal(id) {
   editingId = id;
   document.getElementById('modalTitle').textContent = '编辑股票';
   document.getElementById('formMarket').value = s.market;
-  document.getElementById('formAccount').value = s.account||'futu';
   document.getElementById('formName').value = s.name;
   document.getElementById('formCode').value = s.code;
   document.getElementById('formCost').value = s.cost;
@@ -1075,6 +1074,7 @@ function showEditModal(id) {
   document.getElementById('formIndustry').value = s.industry||'';
   document.getElementById('formNote').value = s.note||'';
   onMarketChange();
+  document.getElementById('formAccount').value = s.account||'futu';
   document.getElementById('modal').classList.add('active');
 }
 
