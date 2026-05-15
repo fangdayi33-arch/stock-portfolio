@@ -805,11 +805,9 @@ function migrateOldData() {
     }
     const m = idx[s.market + '|' + s.code];
     if (m) {
-      if (s.industry !== m.industry) { s.industry = m.industry; changed = true; }
+      if (!s.industry && m.industry) { s.industry = m.industry; changed = true; }
       if (s.name.length <= 2 && m.name.length > 2) { s.name = m.name; changed = true; }
       if (s.note && s.note === m.name) { s.note = ''; changed = true; }
-      // 同步默认数据的成本价（如甘李药业改为负成本）
-      if (Math.abs(s.cost - m.cost) > 0.001) { s.cost = m.cost; changed = true; }
     }
   });
 
