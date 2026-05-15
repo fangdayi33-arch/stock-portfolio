@@ -517,6 +517,27 @@
 let stocks = [];
 let editingId = null;
 const STORAGE_KEY = 'stock_portfolio_data';
+const CASH_KEY = 'stock_cash_data';
+
+const DEFAULT_CASH = {
+  futu: 74989.36,
+  haitong_hk: 45242.25,
+  haitong_a: 0,
+  dongguan: 31369.88
+};
+
+function getCashData() {
+  try {
+    const r = localStorage.getItem(CASH_KEY);
+    if (r) { const d = JSON.parse(r); return d; }
+  } catch(e) {}
+  return {...DEFAULT_CASH};
+}
+
+function saveCashData(d) {
+  localStorage.setItem(CASH_KEY, JSON.stringify(d));
+}
+
 const SINA_CORS_PROXIES = [
   u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
   u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
@@ -710,7 +731,7 @@ async function syncToGithub() {
   if (!getGithubToken()) return;
   try {
     setSyncStatus('saving');
-    await saveToGithub(stocks);
+    await saveToGithub({ stocks, cash: getCashData() });
     setSyncStatus('ok');
   } catch(e) {
     console.error('GitHub sync error:', e);
@@ -723,7 +744,12 @@ async function loadData() {
   // Try GitHub first
   try {
     const ghData = await loadFromGithub();
-    stocks = ghData;
+    if (Array.isArray(ghData)) {
+      stocks = ghData;
+    } else {
+      stocks = ghData.stocks || [];
+      if (ghData.cash) saveCashData(ghData.cash);
+    }
     migrateOldData();
     setSyncStatus('ok');
     return;
@@ -972,8 +998,9 @@ function updateSummary() {
   pe.textContent = (pnl>=0?'+':'')+'¥'+fmt(Math.abs(pnl));
   pe.className = 'value '+(pnl>=0?'profit':'loss');
 
-  const cashHKD = ACCOUNT_META.futu.cash || 0;
-  const cashCNY = (ACCOUNT_META.haitong_hk.cash || 0) + (ACCOUNT_META.dongguan.cash || 0);
+  const cashData = getCashData();
+  const cashHKD = cashData.futu || 0;
+  const cashCNY = (cashData.haitong_hk || 0) + (cashData.dongguan || 0);
   const cashTotalCNY = cashCNY + cashHKD * CNY_RATE.hk;
 
   document.getElementById('totalCash').textContent = '¥'+fmt(cashTotalCNY);
@@ -988,25 +1015,25 @@ function updateSummary() {
 }
 
 function updateCashDisplay() {
-  updateCashItem('hk-futu', ACCOUNT_META.futu, getStocks('hk','futu'));
+  const cashData = getCashData();
+  updateCashItem('hk-futu', ACCOUNT_META.futu, getStocks('hk','futu'), cashData.futu || 0, 'futu');
   const haitongCost = getStocks('a','haitong_hk').reduce((s,x) => s + x.cost*x.shares, 0)
                    + getStocks('a','haitong_a').reduce((s,x) => s + x.cost*x.shares, 0);
-  updateCashItem('a-haitong', ACCOUNT_META.haitong_hk, null, haitongCost);
-  updateCashItem('a-dongguan', ACCOUNT_META.dongguan, getStocks('a','dongguan'));
+  updateCashItem('a-haitong', ACCOUNT_META.haitong_hk, null, cashData.haitong_hk || 0, 'haitong_hk', haitongCost);
+  updateCashItem('a-dongguan', ACCOUNT_META.dongguan, getStocks('a','dongguan'), cashData.dongguan || 0, 'dongguan');
 }
 
-function updateCashItem(elId, meta, stockList, precomputedCost) {
+function updateCashItem(elId, meta, stockList, cashAmount, accountKey, precomputedCost) {
   const el = document.getElementById('cash-'+elId);
   if (!el) return;
-  const cash = meta.cash || 0;
   const totalInv = precomputedCost !== undefined
     ? precomputedCost
     : (stockList ? stockList.reduce((s,x) => s + x.cost*x.shares, 0) : 0);
-  const total = totalInv + cash;
-  const ratio = total > 0 ? (cash / total * 100) : 0;
+  const total = totalInv + cashAmount;
+  const ratio = total > 0 ? (cashAmount / total * 100) : 0;
   const sym = meta.currency === 'HKD' ? 'HK$' : '¥';
   el.innerHTML = `
-    <span class="item"><span class="lbl">现金</span><span class="val">${sym}${fmt(cash)}</span></span>
+    <span class="item"><span class="lbl">现金</span><span class="val">${sym}${fmt(cashAmount)}</span> <span class="footer-link" onclick="editCash('${accountKey}','${sym}')" style="font-size:10px;">✎</span></span>
     <span class="item"><span class="lbl">持仓成本</span><span class="val">${sym}${fmt(totalInv)}</span></span>
     <span class="item"><span class="lbl">现金占比</span><span class="val highlight">${fmt(ratio)}%</span></span>
     <span class="item"><span class="lbl">总资产</span><span class="val">${sym}${fmt(total)}</span></span>`;
@@ -1101,6 +1128,20 @@ function showToast(m) {
   clearTimeout(e._timer); e._timer = setTimeout(()=>e.classList.remove('show'), 2500);
 }
 function showShareInfo() { document.getElementById('shareModal').classList.add('active'); }
+
+function editCash(accountKey, sym) {
+  const cashData = getCashData();
+  const current = cashData[accountKey] || 0;
+  const labels = { futu:'富途证券', haitong_hk:'海通证券', dongguan:'东莞证券' };
+  const input = prompt(`输入${labels[accountKey]||accountKey}现金金额 (${sym}):`, current);
+  if (input === null) return;
+  const num = parseFloat(input);
+  if (isNaN(num) || num < 0) return showToast('请输入有效金额');
+  cashData[accountKey] = num;
+  saveCashData(cashData);
+  renderAll();
+  showToast('现金已更新');
+}
 
 /* ====== 收盘价更新（东方财富 + 新浪双接口） ====== */
 function refreshPrices() {
