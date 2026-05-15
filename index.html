@@ -741,8 +741,7 @@ async function syncToGithub() {
 
 /* ====== 数据加载 & 迁移 ====== */
 async function loadData() {
-  // 先从本地加载，保证刷新不丢数据
-  let loadedFromLocal = false;
+  // 本地优先：已有数据就不从 GitHub 覆盖
   try {
     const r = localStorage.getItem(STORAGE_KEY);
     if (r) {
@@ -753,19 +752,22 @@ async function loadData() {
         stocks = localData.stocks || [];
         if (localData.cash) saveCashData(localData.cash);
       }
-      loadedFromLocal = true;
+      migrateOldData();
+      setSyncStatus('offline');
+      // 后台推送本地数据到 GitHub（不等待）
+      if (getGithubToken()) setTimeout(syncToGithub, 100);
+      return;
     }
   } catch(e) {}
 
-  // 再尝试从 GitHub 拉最新数据（覆盖本地，但保留现金）
+  // 没有本地数据：从 GitHub 首次加载
   try {
     const ghData = await loadFromGithub();
-    const oldCash = getCashData();
     if (Array.isArray(ghData)) {
       stocks = ghData;
     } else {
       stocks = ghData.stocks || [];
-      if (ghData.cash) saveCashData({...oldCash, ...ghData.cash});
+      if (ghData.cash) saveCashData(ghData.cash);
     }
     migrateOldData();
     saveData();
@@ -773,19 +775,10 @@ async function loadData() {
     return;
   } catch(e) { /* GitHub 不可用 */ }
 
-  // GitHub 失败：用本地数据
-  if (loadedFromLocal) {
-    migrateOldData();
-    setSyncStatus('offline');
-    if (getGithubToken()) syncToGithub();
-    return;
-  }
-
   // 首次使用，初始化默认数据
   stocks = JSON.parse(JSON.stringify(DEFAULT_DATA));
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(stocks));
+  saveData();
   setSyncStatus('offline');
-  if (getGithubToken()) syncToGithub();
 }
 
 function saveData() {
