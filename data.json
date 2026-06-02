@@ -227,6 +227,18 @@
       "price": 0.657,
       "industry": "基金",
       "note": ""
+    },
+    {
+      "id": "s_1780365266629_87yn",
+      "market": "a",
+      "account": "haitong_a",
+      "name": "粮食ETF",
+      "code": "159031",
+      "cost": 0.979,
+      "shares": 5200,
+      "price": 0.979,
+      "industry": "",
+      "note": ""
     }
   ],
   "cash": {
