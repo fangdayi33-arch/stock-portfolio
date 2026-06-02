@@ -8,7 +8,7 @@
       "code": "02400",
       "cost": 50.85,
       "shares": 2200,
-      "price": 54.3,
+      "price": 54.05,
       "industry": "传媒",
       "note": ""
     },
@@ -20,7 +20,7 @@
       "code": "09992",
       "cost": 256.2,
       "shares": 200,
-      "price": 179.4,
+      "price": 178,
       "industry": "轻工制造",
       "note": ""
     },
@@ -32,7 +32,7 @@
       "code": "03690",
       "cost": 112.705,
       "shares": 1100,
-      "price": 78.7,
+      "price": 82,
       "industry": "社会服务",
       "note": ""
     },
@@ -44,7 +44,7 @@
       "code": "00880",
       "cost": 3.031,
       "shares": 14000,
-      "price": 1.93,
+      "price": 1.95,
       "industry": "社会服务",
       "note": ""
     },
@@ -56,7 +56,7 @@
       "code": "00700",
       "cost": 497.437,
       "shares": 200,
-      "price": 436.4,
+      "price": 441,
       "industry": "传媒",
       "note": "港股通"
     },
@@ -68,7 +68,7 @@
       "code": "02020",
       "cost": 80,
       "shares": 600,
-      "price": 76.5,
+      "price": 75.9,
       "industry": "纺织服饰",
       "note": "港股通"
     },
@@ -92,7 +92,7 @@
       "code": "603087",
       "cost": 10.958,
       "shares": 400,
-      "price": 52.75,
+      "price": 53.05,
       "industry": "医药生物",
       "note": ""
     },
@@ -104,7 +104,7 @@
       "code": "513010",
       "cost": 0.749,
       "shares": 100900,
-      "price": 0.647,
+      "price": 0.654,
       "industry": "基金",
       "note": ""
     },
@@ -116,7 +116,7 @@
       "code": "000568",
       "cost": 103.657,
       "shares": 400,
-      "price": 90.2,
+      "price": 90.17,
       "industry": "食品饮料",
       "note": ""
     },
@@ -128,7 +128,7 @@
       "code": "000651",
       "cost": 43.182,
       "shares": 2100,
-      "price": 39.08,
+      "price": 39.46,
       "industry": "家用电器",
       "note": ""
     },
@@ -140,7 +140,7 @@
       "code": "688696",
       "cost": 103.822,
       "shares": 1000,
-      "price": 76.28,
+      "price": 76.55,
       "industry": "电子",
       "note": ""
     },
@@ -152,7 +152,7 @@
       "code": "516570",
       "cost": 1.073,
       "shares": 33200,
-      "price": 1,
+      "price": 1.002,
       "industry": "基金",
       "note": ""
     },
@@ -164,7 +164,7 @@
       "code": "515220",
       "cost": 1.172,
       "shares": 17300,
-      "price": 1.365,
+      "price": 1.36,
       "industry": "基金",
       "note": ""
     },
@@ -176,7 +176,7 @@
       "code": "513050",
       "cost": 1.591,
       "shares": 13500,
-      "price": 1.115,
+      "price": 1.13,
       "industry": "基金",
       "note": ""
     },
@@ -200,7 +200,7 @@
       "code": "601828",
       "cost": 2.661,
       "shares": 11500,
-      "price": 2.53,
+      "price": 2.55,
       "industry": "商贸零售",
       "note": ""
     },
@@ -212,7 +212,7 @@
       "code": "600585",
       "cost": 20.63,
       "shares": 1300,
-      "price": 20.29,
+      "price": 20.36,
       "industry": "建筑材料",
       "note": ""
     },
