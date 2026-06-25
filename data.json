@@ -251,6 +251,18 @@
       "price": 33.23,
       "industry": "",
       "note": ""
+    },
+    {
+      "id": "s_1782372411553_zkxq",
+      "market": "a",
+      "account": "haitong_a",
+      "name": "华光新材",
+      "code": "688379",
+      "cost": 89.28,
+      "shares": 200,
+      "price": 85.26,
+      "industry": "",
+      "note": ""
     }
   ],
   "cash": {
