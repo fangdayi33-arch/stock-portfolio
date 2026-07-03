@@ -1,201 +1,1412 @@
 [
     {
         "status": "active",
-        "code": "02475",
-        "name": "立讯精密",
-        "listDate": "2026-07-09",
-        "sectorName": "消费电子/硬科技",
-        "margin": 45.2,
-        "cornerstone": 55,
-        "floatCap": 242.66,
-        "isAH": true,
-        "ahDiscount": 35.5,
-        "sponsor": "tier1",
-        "sponsorName": "中金公司",
-        "greenShoe": true,
-        "score": 45,
-        "rating": "观望放弃",
+        "code": "02523",
+        "name": "永康控股",
+        "listDate": "2026-07-13",
+        "offerPrice": 2.68,
+        "sharesOffered": 51600000,
+        "floatCap": 1.38,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 25,
+        "rating": "投机博弈",
         "reasons": [
-            "处于 15x-50x 极其尴尬的'温水区'，触发30%回拨但热度不够，极易踩踏破发",
-            "基石锁仓比例超 50%，首日流通盘抛压被锁死"
-        ]
+            "小盘股 (1.38亿)，易被资金炒作"
+        ],
+        "dataQuality": "partial"
     },
     {
         "status": "active",
         "code": "02249",
         "name": "晶合集成",
-        "listDate": "2026-07-09",
-        "sectorName": "半导体代工",
-        "margin": 8.5,
-        "cornerstone": 42,
-        "floatCap": 64.85,
+        "listDate": "2026-07-10",
+        "offerPrice": 32.3,
+        "sharesOffered": 216167000,
+        "floatCap": 69.82,
+        "sectorName": "待更新",
         "isAH": true,
-        "ahDiscount": 18.2,
-        "sponsor": "tier1",
-        "sponsorName": "国泰君安",
-        "greenShoe": true,
-        "score": 30,
-        "rating": "避险放弃",
+        "ahDiscount": 47.9,
+        "aSharePrice": 62.0,
+        "score": 40,
+        "rating": "可参与",
         "reasons": [
-            "孖展认购情绪温和",
-            "基石比例一般，有一定安全垫"
-        ]
+            "中大盘股 (69.82亿)，走势稳健",
+            "较 A 股折价 47.9%，安全垫极厚"
+        ],
+        "dataQuality": "partial"
     },
     {
         "status": "active",
-        "code": "06951",
-        "name": "三环集团",
-        "listDate": "2026-07-09",
-        "sectorName": "电子陶瓷元件",
-        "margin": 105.8,
-        "cornerstone": 50,
-        "floatCap": 71.58,
-        "isAH": true,
-        "ahDiscount": 42.1,
-        "sponsor": "tier1",
-        "sponsorName": "中金公司",
-        "greenShoe": true,
-        "score": 105,
-        "rating": "全力申购",
-        "reasons": [
-            "公开发售热度极高 (>100x)，触发最高回拨，多头强劲",
-            "基石锁仓比例超 50%，首日流通盘抛压被锁死"
-        ]
-    },
-    {
-        "status": "active",
-        "code": "03752",
-        "name": "珞石机器人",
-        "listDate": "2026-07-09",
-        "sectorName": "协作/工业机器人",
-        "margin": 1.2,
-        "cornerstone": 35,
-        "floatCap": 8.75,
+        "code": "06745",
+        "name": "滨化股份",
+        "listDate": "2026-07-10",
+        "offerPrice": 3.59,
+        "sharesOffered": 352126000,
+        "floatCap": 12.64,
+        "sectorName": "待更新",
         "isAH": false,
-        "ahDiscount": 0,
-        "sponsor": "tier2",
-        "sponsorName": "中信证券",
-        "greenShoe": true,
-        "score": 30,
-        "rating": "观望放弃",
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
         "reasons": [
-            "孖展认购情绪温和",
-            "基石比例一般，有一定安全垫"
-        ]
+            "中小盘 (12.64亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
     },
     {
         "status": "active",
         "code": "00537",
         "name": "普源精电",
         "listDate": "2026-07-09",
-        "sectorName": "电子测量仪器",
-        "margin": 2.5,
-        "cornerstone": 20,
+        "offerPrice": 45.98,
+        "sharesOffered": 24802200,
         "floatCap": 11.4,
+        "sectorName": "待更新",
         "isAH": true,
-        "ahDiscount": 25.0,
-        "sponsor": "tier2",
-        "sponsorName": "中信建投",
-        "greenShoe": false,
-        "score": -5,
-        "rating": "观望放弃",
+        "ahDiscount": 29.9,
+        "aSharePrice": 65.55,
+        "score": 35,
+        "rating": "可参与",
         "reasons": [
-            "孖展认购情绪温和",
-            "无基石或基石比例薄弱，缺乏机构护盘背书"
-        ]
+            "中小盘 (11.4亿)，炒作空间适中",
+            "A/H 折价 29.9%，有一定安全边际"
+        ],
+        "dataQuality": "partial"
     },
     {
         "status": "active",
-        "code": "02667",
-        "name": "同仁堂医养",
-        "listDate": "2026-07-07",
-        "sectorName": "大健康/中医养老",
-        "margin": 18.2,
-        "cornerstone": 48,
-        "floatCap": 12.5,
-        "isAH": false,
-        "ahDiscount": 0,
-        "sponsor": "tier1",
-        "sponsorName": "中金公司",
-        "greenShoe": true,
-        "score": 30,
-        "rating": "观望放弃",
+        "code": "01377",
+        "name": "鼎泰高科",
+        "listDate": "2026-07-09",
+        "offerPrice": 380.0,
+        "sharesOffered": 12632000,
+        "floatCap": 48.0,
+        "sectorName": "待更新",
+        "isAH": true,
+        "ahDiscount": -164.9,
+        "aSharePrice": 143.45,
+        "score": 10,
+        "rating": "观望",
         "reasons": [
-            "处于 15x-50x 极其尴尬的'温水区'，触发30%回拨但热度不够，极易踩踏破发",
-            "基石比例一般，有一定安全垫"
-        ]
+            "中大盘股 (48.0亿)，走势稳健",
+            "A/H 折价仅 -164.9%，安全空间不足"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "02475",
+        "name": "立讯精密",
+        "listDate": "2026-07-09",
+        "offerPrice": 63.28,
+        "sharesOffered": 383472800,
+        "floatCap": 242.66,
+        "sectorName": "待更新",
+        "isAH": true,
+        "ahDiscount": 0.4,
+        "aSharePrice": 63.52,
+        "score": 0,
+        "rating": "观望",
+        "reasons": [
+            "超级大盘股 (242.66亿)，首日涨幅空间有限",
+            "A/H 折价仅 0.4%，安全空间不足"
+        ],
+        "dataQuality": "partial"
     },
     {
         "status": "active",
         "code": "02797",
         "name": "齐云山食品",
         "listDate": "2026-07-09",
-        "sectorName": "传统休闲食品",
-        "margin": 0.4,
-        "cornerstone": 15,
-        "floatCap": 1.5,
+        "offerPrice": 8.0,
+        "sharesOffered": 25000000,
+        "floatCap": 2.0,
+        "sectorName": "食品饮料",
         "isAH": false,
-        "ahDiscount": 0,
-        "sponsor": "tier3",
-        "sponsorName": "某中资小券商",
-        "greenShoe": true,
-        "score": 10,
-        "rating": "避险放弃",
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 25,
+        "rating": "投机博弈",
         "reasons": [
-            "公开发售认购不足 (<1x)，筹码全部归国配机构锁定，具备'套路拨'潜质",
-            "无基石或基石比例薄弱，缺乏机构护盘背书"
-        ]
+            "小盘股 (2.0亿)，易被资金炒作"
+        ],
+        "dataQuality": "partial"
     },
     {
-        "status": "listed",
-        "code": "03347",
+        "status": "active",
+        "code": "03752",
+        "name": "珞石机器人",
+        "listDate": "2026-07-09",
+        "offerPrice": 38.0,
+        "sharesOffered": 23031900,
+        "floatCap": 8.75,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (8.75亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "06951",
+        "name": "三环集团",
+        "listDate": "2026-07-09",
+        "offerPrice": 100.3,
+        "sharesOffered": 71364300,
+        "floatCap": 71.58,
+        "sectorName": "待更新",
+        "isAH": true,
+        "ahDiscount": 28.2,
+        "aSharePrice": 139.61,
+        "score": 30,
+        "rating": "可参与",
+        "reasons": [
+            "中大盘股 (71.58亿)，走势稳健",
+            "A/H 折价 28.2%，有一定安全边际"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01770",
+        "name": "东方科脉",
+        "listDate": "2026-07-08",
+        "offerPrice": 101.11,
+        "sharesOffered": 5118600,
+        "floatCap": 5.18,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (5.18亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "06880",
+        "name": "MOMENTA-W",
+        "listDate": "2026-07-08",
+        "offerPrice": 295.6,
+        "sharesOffered": 19938300,
+        "floatCap": 58.94,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 15,
+        "rating": "观望",
+        "reasons": [
+            "中大盘股 (58.94亿)，走势稳健"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "07656",
+        "name": "瑞为技术",
+        "listDate": "2026-07-08",
+        "offerPrice": 21.66,
+        "sharesOffered": 28087000,
+        "floatCap": 6.08,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (6.08亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "07687",
+        "name": "易控智驾",
+        "listDate": "2026-07-08",
+        "offerPrice": 87.92,
+        "sharesOffered": 26132000,
+        "floatCap": 22.98,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (22.98亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "08090",
+        "name": "宝盖新材",
+        "listDate": "2026-07-08",
+        "offerPrice": 8.51,
+        "sharesOffered": 14470000,
+        "floatCap": 1.23,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 25,
+        "rating": "投机博弈",
+        "reasons": [
+            "小盘股 (1.23亿)，易被资金炒作"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "09971",
+        "name": "基本半导体",
+        "listDate": "2026-07-08",
+        "offerPrice": 31.62,
+        "sharesOffered": 27386200,
+        "floatCap": 8.66,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (8.66亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "02667",
+        "name": "同仁堂医养",
+        "listDate": "2026-07-07",
+        "offerPrice": 6.21,
+        "sharesOffered": 108153500,
+        "floatCap": 6.72,
+        "sectorName": "医药健康",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (6.72亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "00668",
+        "name": "安克创新",
+        "listDate": "2026-07-02",
+        "offerPrice": 99.32,
+        "sharesOffered": 46632800,
+        "floatCap": 46.32,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 15,
+        "rating": "观望",
+        "reasons": [
+            "中大盘股 (46.32亿)，走势稳健"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "02697",
         "name": "真健康医疗-B",
         "listDate": "2026-06-30",
-        "sectorName": "手术机器人",
-        "margin": 152.0,
-        "cornerstone": 52,
-        "floatCap": 5.2,
-        "darkPool": "+118.2%",
-        "debut": "+156.4%",
-        "profit": "一手约 +1.25万"
+        "offerPrice": 126.2,
+        "sharesOffered": 3564700,
+        "floatCap": 4.5,
+        "sectorName": "医药健康",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 25,
+        "rating": "观望",
+        "reasons": [
+            "小盘股 (4.5亿)，易被资金炒作"
+        ],
+        "dataQuality": "partial"
     },
     {
-        "status": "listed",
-        "code": "01375",
+        "status": "active",
+        "code": "03952",
         "name": "来福谐波",
         "listDate": "2026-06-30",
-        "sectorName": "精密减速器",
-        "margin": 88.5,
-        "cornerstone": 45,
-        "floatCap": 4.8,
-        "darkPool": "+82.3%",
-        "debut": "+105.1%",
-        "profit": "一手约 +8600"
+        "offerPrice": 85.5,
+        "sharesOffered": 13441900,
+        "floatCap": 11.49,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (11.49亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
     },
     {
-        "status": "listed",
-        "code": "02998",
+        "status": "active",
+        "code": "06715",
         "name": "鲟龙科技",
         "listDate": "2026-06-30",
-        "sectorName": "高档水产/鱼子酱",
-        "margin": 0.9,
-        "cornerstone": 10,
-        "floatCap": 1.8,
-        "darkPool": "+45.0%",
-        "debut": "+98.7%",
-        "profit": "一手约 +4200"
+        "offerPrice": 75.5,
+        "sharesOffered": 16332900,
+        "floatCap": 12.33,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (12.33亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
     },
     {
-        "status": "listed",
+        "status": "active",
+        "code": "06915",
+        "name": "江西生物",
+        "listDate": "2026-06-30",
+        "offerPrice": 11.2,
+        "sharesOffered": 36234500,
+        "floatCap": 4.06,
+        "sectorName": "医药健康",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 25,
+        "rating": "观望",
+        "reasons": [
+            "小盘股 (4.06亿)，易被资金炒作"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01191",
+        "name": "海光芯正",
+        "listDate": "2026-06-29",
+        "offerPrice": 114.0,
+        "sharesOffered": 13431500,
+        "floatCap": 15.31,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (15.31亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "02672",
+        "name": "白鸽在线",
+        "listDate": "2026-06-29",
+        "offerPrice": 15.6,
+        "sharesOffered": 33344400,
+        "floatCap": 5.2,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (5.2亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "09637",
+        "name": "礼邦医药-B",
+        "listDate": "2026-06-29",
+        "offerPrice": 22.6,
+        "sharesOffered": 56755400,
+        "floatCap": 12.83,
+        "sectorName": "医药健康",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (12.83亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01688",
+        "name": "领益智造",
+        "listDate": "2026-06-26",
+        "offerPrice": 10.18,
+        "sharesOffered": 811811880,
+        "floatCap": 82.64,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 15,
+        "rating": "观望",
+        "reasons": [
+            "中大盘股 (82.64亿)，走势稳健"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01956",
+        "name": "中科闻歌",
+        "listDate": "2026-06-26",
+        "offerPrice": 60.7,
+        "sharesOffered": 14834600,
+        "floatCap": 9.0,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (9.0亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "02272",
+        "name": "科拓股份",
+        "listDate": "2026-06-26",
+        "offerPrice": 39.55,
+        "sharesOffered": 10112280,
+        "floatCap": 4.0,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 25,
+        "rating": "观望",
+        "reasons": [
+            "小盘股 (4.0亿)，易被资金炒作"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "03661",
+        "name": "圣邦股份",
+        "listDate": "2026-06-26",
+        "offerPrice": 85.2,
+        "sharesOffered": 54001200,
+        "floatCap": 46.01,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 15,
+        "rating": "观望",
+        "reasons": [
+            "中大盘股 (46.01亿)，走势稳健"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "06228",
+        "name": "MERDEKAGOLD-DRS",
+        "listDate": "2026-06-26",
+        "offerPrice": 26.6,
+        "sharesOffered": 89668600,
+        "floatCap": 23.85,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (23.85亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "09630",
+        "name": "芯碁微装",
+        "listDate": "2026-06-26",
+        "offerPrice": 252.73,
+        "sharesOffered": 12838650,
+        "floatCap": 32.45,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 15,
+        "rating": "观望",
+        "reasons": [
+            "中大盘股 (32.45亿)，走势稳健"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "02335",
+        "name": "麦科医药-B",
+        "listDate": "2026-06-24",
+        "offerPrice": 18.2,
+        "sharesOffered": 58054400,
+        "floatCap": 10.57,
+        "sectorName": "医药健康",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (10.57亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "06106",
+        "name": "仙工智能",
+        "listDate": "2026-06-24",
+        "offerPrice": 101.6,
+        "sharesOffered": 10497300,
+        "floatCap": 10.67,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (10.67亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "06067",
+        "name": "星源材质",
+        "listDate": "2026-06-23",
+        "offerPrice": 8.98,
+        "sharesOffered": 149523500,
+        "floatCap": 13.43,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (13.43亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "06132",
+        "name": "华健未来-B",
+        "listDate": "2026-06-23",
+        "offerPrice": 81.8,
+        "sharesOffered": 13600000,
+        "floatCap": 11.12,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (11.12亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01392",
+        "name": "海清智元",
+        "listDate": "2026-06-22",
+        "offerPrice": 7.2,
+        "sharesOffered": 85162500,
+        "floatCap": 6.13,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (6.13亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
         "code": "06675",
         "name": "SENASIC",
         "listDate": "2026-06-17",
-        "sectorName": "车载传感器芯片",
-        "margin": 350.1,
-        "cornerstone": 48,
+        "offerPrice": 18.36,
+        "sharesOffered": 53407000,
+        "floatCap": 9.81,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (9.81亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "06658",
+        "name": "溜溜梅",
+        "listDate": "2026-06-15",
+        "offerPrice": 43.58,
+        "sharesOffered": 11464100,
         "floatCap": 5.0,
-        "darkPool": "+92.0%",
-        "debut": "+127.1%",
-        "profit": "一手约 +1.83万"
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 25,
+        "rating": "观望",
+        "reasons": [
+            "小盘股 (5.0亿)，易被资金炒作"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01081",
+        "name": "大金重工",
+        "listDate": "2026-06-05",
+        "offerPrice": 66.4,
+        "sharesOffered": 102336500,
+        "floatCap": 67.95,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 15,
+        "rating": "观望",
+        "reasons": [
+            "中大盘股 (67.95亿)，走势稳健"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01779",
+        "name": "天辰生物-B",
+        "listDate": "2026-06-05",
+        "offerPrice": 96.06,
+        "sharesOffered": 16322100,
+        "floatCap": 15.68,
+        "sectorName": "医药健康",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (15.68亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "02290",
+        "name": "龙丰集团",
+        "listDate": "2026-06-05",
+        "offerPrice": 5.18,
+        "sharesOffered": 125000000,
+        "floatCap": 6.47,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (6.47亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "02553",
+        "name": "首钢朗泽",
+        "listDate": "2026-06-03",
+        "offerPrice": 14.6,
+        "sharesOffered": 40000000,
+        "floatCap": 5.84,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (5.84亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "03388",
+        "name": "创想三维",
+        "listDate": "2026-05-29",
+        "offerPrice": 18.8,
+        "sharesOffered": 84441600,
+        "floatCap": 15.88,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (15.88亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "00901",
+        "name": "华曦达",
+        "listDate": "2026-05-27",
+        "offerPrice": 32.8,
+        "sharesOffered": 19207300,
+        "floatCap": 6.3,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (6.3亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "02723",
+        "name": "深演智能",
+        "listDate": "2026-05-27",
+        "offerPrice": 55.5,
+        "sharesOffered": 9068000,
+        "floatCap": 5.03,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (5.03亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "03310",
+        "name": "云英谷科技",
+        "listDate": "2026-05-27",
+        "offerPrice": 20.81,
+        "sharesOffered": 60788000,
+        "floatCap": 12.65,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (12.65亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "06872",
+        "name": "丹诺医药-B",
+        "listDate": "2026-05-22",
+        "offerPrice": 75.7,
+        "sharesOffered": 8856000,
+        "floatCap": 6.7,
+        "sectorName": "医药健康",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (6.7亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01511",
+        "name": "驭势科技",
+        "listDate": "2026-05-20",
+        "offerPrice": 60.3,
+        "sharesOffered": 14461200,
+        "floatCap": 8.72,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (8.72亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "07688",
+        "name": "拓璞数控",
+        "listDate": "2026-05-20",
+        "offerPrice": 26.39,
+        "sharesOffered": 75129500,
+        "floatCap": 19.83,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (19.83亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "06871",
+        "name": "翼菲科技",
+        "listDate": "2026-05-18",
+        "offerPrice": 30.5,
+        "sharesOffered": 24600000,
+        "floatCap": 7.5,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (7.5亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "07630",
+        "name": "英派药业-B",
+        "listDate": "2026-05-13",
+        "offerPrice": 20.1,
+        "sharesOffered": 48273400,
+        "floatCap": 9.7,
+        "sectorName": "医药健康",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (9.7亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "07666",
+        "name": "剂泰科技-P",
+        "listDate": "2026-05-13",
+        "offerPrice": 10.5,
+        "sharesOffered": 231413000,
+        "floatCap": 24.3,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (24.3亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01236",
+        "name": "乐动机器人",
+        "listDate": "2026-05-11",
+        "offerPrice": 26.36,
+        "sharesOffered": 33333400,
+        "floatCap": 8.79,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (8.79亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01187",
+        "name": "可孚医疗",
+        "listDate": "2026-05-06",
+        "offerPrice": 39.33,
+        "sharesOffered": 27000000,
+        "floatCap": 10.62,
+        "sectorName": "医药健康",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (10.62亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01609",
+        "name": "天星医疗",
+        "listDate": "2026-05-05",
+        "offerPrice": 98.5,
+        "sharesOffered": 8421850,
+        "floatCap": 8.3,
+        "sectorName": "医药健康",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (8.3亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "06810",
+        "name": "商米科技-W",
+        "listDate": "2026-04-29",
+        "offerPrice": 24.86,
+        "sharesOffered": 42626800,
+        "floatCap": 10.6,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (10.6亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "01879",
+        "name": "曦智科技-P",
+        "listDate": "2026-04-28",
+        "offerPrice": 183.2,
+        "sharesOffered": 15864495,
+        "floatCap": 29.06,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (29.06亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "02493",
+        "name": "迈威生物-B",
+        "listDate": "2026-04-28",
+        "offerPrice": 27.64,
+        "sharesOffered": 47130200,
+        "floatCap": 13.03,
+        "sectorName": "医药健康",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (13.03亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "03296",
+        "name": "华勤技术",
+        "listDate": "2026-04-23",
+        "offerPrice": 77.7,
+        "sharesOffered": 67330400,
+        "floatCap": 52.32,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 15,
+        "rating": "观望",
+        "reasons": [
+            "中大盘股 (52.32亿)，走势稳健"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "02476",
+        "name": "胜宏科技",
+        "listDate": "2026-04-21",
+        "offerPrice": 209.88,
+        "sharesOffered": 110227500,
+        "floatCap": 231.35,
+        "sectorName": "科技/半导体",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 5,
+        "rating": "观望",
+        "reasons": [
+            "超级大盘股 (231.35亿)，首日涨幅空间有限"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "00068",
+        "name": "MANYCORE TECH",
+        "listDate": "2026-04-17",
+        "offerPrice": 7.62,
+        "sharesOffered": 184711500,
+        "floatCap": 14.08,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (14.08亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "03277",
+        "name": "长光辰芯",
+        "listDate": "2026-04-17",
+        "offerPrice": 39.88,
+        "sharesOffered": 75088300,
+        "floatCap": 29.95,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 20,
+        "rating": "观望",
+        "reasons": [
+            "中小盘 (29.95亿)，炒作空间适中"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "active",
+        "code": "06656",
+        "name": "思格新能",
+        "listDate": "2026-04-16",
+        "offerPrice": 324.2,
+        "sharesOffered": 15609900,
+        "floatCap": 50.61,
+        "sectorName": "待更新",
+        "isAH": false,
+        "ahDiscount": null,
+        "aSharePrice": null,
+        "score": 15,
+        "rating": "观望",
+        "reasons": [
+            "中大盘股 (50.61亿)，走势稳健"
+        ],
+        "dataQuality": "partial"
+    },
+    {
+        "status": "listed",
+        "code": "02573",
+        "name": "新琪安",
+        "listDate": "2026-06-10",
+        "offerPrice": 18.9,
+        "currentPrice": 4.5,
+        "debut": "-76.2%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "02605",
+        "name": "METALIGHT",
+        "listDate": "2026-06-10",
+        "offerPrice": 9.75,
+        "currentPrice": 1.17,
+        "debut": "-88.0%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "09881",
+        "name": "容大科技",
+        "listDate": "2026-06-10",
+        "offerPrice": 10.0,
+        "currentPrice": 17.7,
+        "debut": "+77.0%",
+        "profit": "参考首日表现",
+        "sectorName": "科技/半导体"
+    },
+    {
+        "status": "listed",
+        "code": "02228",
+        "name": "晶泰控股",
+        "listDate": "2026-06-13",
+        "offerPrice": 5.28,
+        "currentPrice": 7.56,
+        "debut": "+43.2%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "03288",
+        "name": "海天味业",
+        "listDate": "2026-06-19",
+        "offerPrice": 36.3,
+        "currentPrice": 31.0,
+        "debut": "-14.6%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "02050",
+        "name": "三花智控",
+        "listDate": "2026-06-23",
+        "offerPrice": 22.53,
+        "currentPrice": 27.48,
+        "debut": "+22.0%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "02609",
+        "name": "佰泽医疗",
+        "listDate": "2026-06-23",
+        "offerPrice": 4.22,
+        "currentPrice": 3.3,
+        "debut": "-21.8%",
+        "profit": "参考首日表现",
+        "sectorName": "医药健康"
+    },
+    {
+        "status": "listed",
+        "code": "02617",
+        "name": "药捷安康-B",
+        "listDate": "2026-06-23",
+        "offerPrice": 13.15,
+        "currentPrice": 13.0,
+        "debut": "-1.1%",
+        "profit": "参考首日表现",
+        "sectorName": "医药健康"
+    },
+    {
+        "status": "listed",
+        "code": "02619",
+        "name": "香江电器",
+        "listDate": "2026-06-25",
+        "offerPrice": 2.86,
+        "currentPrice": 1.38,
+        "debut": "-51.7%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "02643",
+        "name": "曹操出行",
+        "listDate": "2026-06-25",
+        "offerPrice": 41.94,
+        "currentPrice": 18.6,
+        "debut": "-55.7%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "02508",
+        "name": "圣贝拉集团",
+        "listDate": "2026-06-26",
+        "offerPrice": 6.58,
+        "currentPrice": 3.33,
+        "debut": "-49.4%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "06168",
+        "name": "周六福",
+        "listDate": "2026-06-26",
+        "offerPrice": 24.0,
+        "currentPrice": 15.28,
+        "debut": "-36.3%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "06883",
+        "name": "颖通控股",
+        "listDate": "2026-06-26",
+        "offerPrice": 2.88,
+        "currentPrice": 2.03,
+        "debut": "-29.5%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "03880",
+        "name": "泰德医药",
+        "listDate": "2026-06-30",
+        "offerPrice": 30.6,
+        "currentPrice": 21.86,
+        "debut": "-28.6%",
+        "profit": "参考首日表现",
+        "sectorName": "医药健康"
+    },
+    {
+        "status": "listed",
+        "code": "06603",
+        "name": "IFBH",
+        "listDate": "2026-06-30",
+        "offerPrice": 27.8,
+        "currentPrice": 6.18,
+        "debut": "-77.8%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "09678",
+        "name": "云知声",
+        "listDate": "2026-06-30",
+        "offerPrice": 205.0,
+        "currentPrice": 69.5,
+        "debut": "-66.1%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "02592",
+        "name": "拨康视云-B",
+        "listDate": "2026-07-03",
+        "offerPrice": 10.1,
+        "currentPrice": 1.43,
+        "debut": "-85.8%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "01828",
+        "name": "富卫集团",
+        "listDate": "2026-07-07",
+        "offerPrice": 38.0,
+        "currentPrice": 28.24,
+        "debut": "-25.7%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "09903",
+        "name": "天数智芯",
+        "listDate": "2026-07-08",
+        "offerPrice": 144.6,
+        "currentPrice": 612.0,
+        "debut": "+323.2%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "status": "listed",
+        "code": "01304",
+        "name": "FORTIOR",
+        "listDate": "2026-07-09",
+        "offerPrice": 120.5,
+        "currentPrice": 143.9,
+        "debut": "+19.4%",
+        "profit": "参考首日表现",
+        "sectorName": "待更新"
+    },
+    {
+        "_meta": {
+            "generatedAt": "2026-07-03 09:35:17",
+            "exchangeRate": 0.9125,
+            "source": "致富证券新股列表 + 腾讯行情"
+        }
     }
 ]

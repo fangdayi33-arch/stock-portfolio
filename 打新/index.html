@@ -3,52 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>港股打新量化评分监控舱 (2026版)</title>
-    <!-- 引入 Tailwind CSS 和 Google Sans 字体 -->
+    <title>港股打新量化评分监控舱</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- 引入 FontAwesome 图标库，用于精致的 UI 呈现 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #0b0f19;
-            color: #f1f5f9;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #111827;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #374151;
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #4b5563;
-        }
-        .glow-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glow-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.15), 0 8px 10px -6px rgba(99, 102, 241, 0.15);
-        }
-        .rating-badge {
-            animation: pulse-soft 2s infinite;
-        }
-        @keyframes pulse-soft {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.85; transform: scale(0.98); }
-        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #111827; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+        .glow-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glow-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.15); }
     </style>
 </head>
 <body class="h-full flex flex-col custom-scrollbar overflow-x-hidden">
 
-    <!-- 顶栏导航 -->
     <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-xl sticky top-0 z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
@@ -58,18 +27,16 @@
                 <div>
                     <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
                         港股打新量化评分实盘监控舱
-                        <span class="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded font-mono">V2.5 Live</span>
+                        <span class="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded font-mono">实时</span>
                     </h1>
-                    <p class="text-xs text-slate-400 mt-0.5">基准环境：2026年7月 (结合FINI机制A/B及大V历史复合打分引擎)</p>
+                    <p class="text-xs text-slate-400 mt-0.5">数据源：致富证券新股列表 + 腾讯行情</p>
                 </div>
             </div>
-            
             <div class="flex items-center gap-4">
                 <div class="text-right hidden sm:block">
-                    <span class="text-[10px] uppercase tracking-wider text-slate-500 block">数据最近同步 (HKT)</span>
-                    <span id="syncTime" class="text-xs font-mono font-medium text-emerald-400">2026-07-02 17:00:15</span>
+                    <span class="text-[10px] uppercase tracking-wider text-slate-500 block">数据同步</span>
+                    <span id="syncTime" class="text-xs font-mono font-medium text-emerald-400">-</span>
                 </div>
-                <!-- 实时同步 JSON 数据按钮 -->
                 <button onclick="toggleSyncModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs font-semibold flex items-center gap-2 text-slate-200 transition-colors">
                     <i class="fa-solid fa-cloud-arrow-down text-indigo-400"></i> 数据源同步
                 </button>
@@ -77,70 +44,62 @@
         </div>
     </header>
 
-    <!-- 主体区域 -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-6 py-8">
-        
-        <!-- 决策模块区 (重点！正在招股中的股票，提供明确的分析指导) -->
+
+        <!-- 决策模块 -->
         <section class="mb-12">
             <div class="flex justify-between items-end border-b border-slate-800 pb-3 mb-6">
                 <div>
                     <h2 class="text-lg font-bold text-white flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
-                        招股中 / 拟上市新股（打新决策与操作指导）
+                        招股中 / 拟上市新股
                     </h2>
-                    <p class="text-xs text-slate-400 mt-1">系统已加载 2026年7月最新真实新股。模型将根据孖展、基石锁仓度、稳价绿鞋、及AH折价深度自动给出打新策略。</p>
+                    <p class="text-xs text-slate-400 mt-1">基于流通盘规模和 A+H 折价深度自动给出打新策略</p>
                 </div>
                 <div class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full text-xs font-semibold">
                     待决标的：<span id="activeCount" class="font-bold">0</span>
                 </div>
             </div>
-
-            <!-- 卡片网格 -->
-            <div id="activeIpoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- 动态渲染招股新股 -->
-            </div>
+            <div id="activeIpoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </section>
 
-        <!-- 历史参考区 (已上市新股，不再给出指导意见，仅作为历史首日战绩参考) -->
+        <!-- 历史参考区 -->
         <section>
             <div class="flex justify-between items-end border-b border-slate-800 pb-3 mb-6">
                 <div>
                     <h2 class="text-lg font-bold text-slate-300 flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
-                        近期已上市参考（无指导意见，仅复盘首日战绩）
+                        近期已上市参考（无指导意见，仅复盘战绩）
                     </h2>
-                    <p class="text-xs text-slate-400 mt-1">展示 2026 年上半年及最近（如6月30日）挂牌的新股实际首日表现，用作市场情绪和同行业溢价参考。</p>
+                    <p class="text-xs text-slate-400 mt-1">数据来自港交所和腾讯行情，展示最新已上市新股实际表现</p>
                 </div>
             </div>
-
-            <div id="historyIpoTable" class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
-                <!-- 动态渲染历史参考表格 -->
-            </div>
+            <div id="historyIpoTable" class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl"></div>
         </section>
     </main>
 
     <footer class="border-t border-slate-900 bg-slate-950 px-6 py-4 mt-auto">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-500">
-            <p>© 2026 港股打新量化评分监控舱. 遵循联交所最新交易规则开发.</p>
-            <p>免责声明：本数据模型及分析建议仅供技术交流及实盘推演参考，不构成任何投资性买卖建议。</p>
+            <p>港股打新量化评分监控舱</p>
+            <p>免责声明：本模型分析建议仅供技术交流参考，不构成投资建议。</p>
         </div>
     </footer>
 
-    <!-- 同步数据弹窗 -->
+    <!-- 同步弹窗 -->
     <div id="syncModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-base font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-code text-indigo-400"></i> 同步本地 Python 数据源
+                    <i class="fa-solid fa-code text-indigo-400"></i> 同步数据源
                 </h3>
                 <button onclick="toggleSyncModal()" class="text-slate-400 hover:text-white transition-colors">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
             <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                您可以将 Python 抓取脚本生成的 <code class="bg-slate-950 text-indigo-400 px-1 py-0.5 rounded">ipo_daily_report.json</code> 内容复制并粘贴到下方，点击“导入”即可实现整个监控舱的实时数据替换。
+                将 <code class="bg-slate-950 text-indigo-400 px-1 py-0.5 rounded">ipo_daily_report.json</code> 的内容粘贴到下方，点击导入。
             </p>
-            <textarea id="jsonInput" placeholder="在此粘贴抓取到的 JSON 数组数据..." class="w-full h-48 bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono text-emerald-400 focus:outline-none focus:border-indigo-500 mb-4 custom-scrollbar"></textarea>
+            <textarea id="jsonInput" placeholder="在此粘贴 JSON 数据..." class="w-full h-48 bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono text-emerald-400 focus:outline-none focus:border-indigo-500 mb-4 custom-scrollbar"></textarea>
             <div class="flex justify-end gap-3">
                 <button onclick="toggleSyncModal()" class="px-4 py-2 bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-semibold rounded-lg transition-colors">取消</button>
                 <button onclick="importJsonData()" class="px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-500 text-xs font-semibold rounded-lg transition-colors">解析并同步</button>
@@ -149,445 +108,175 @@
     </div>
 
     <script>
-        // 初始化数据池（严格对齐2026年7月最新正在招股的港股真实名册）
-        let ipoData = [
-            // --- 招股中/即将上市：由量化打分引擎指导 ---
-            {
-                status: 'active',
-                code: "02475",
-                name: "立讯精密",
-                listDate: "2026-07-09",
-                sector: "hot",
-                sectorName: "消费电子/硬科技",
-                sponsor: "tier1",
-                sponsorName: "中金公司",
-                margin: 45.2, // 孖展数据
-                cornerstone: 55, // 基石比例 (55%极高)
-                floatCap: 242.66, // 拟募资总额：242.66 亿港元 (属于超级大盘股)
-                isAH: true,
-                ahDiscount: 35.5, // H股较A股折价 35.5% (安全垫较好)
-                greenShoe: true
-            },
-            {
-                status: 'active',
-                code: "02249",
-                name: "晶合集成",
-                listDate: "2026-07-09",
-                sector: "hot",
-                sectorName: "半导体代工",
-                sponsor: "tier1",
-                sponsorName: "国泰君安",
-                margin: 8.5, // 孖展偏冷 (温水区)
-                cornerstone: 42, 
-                floatCap: 64.85, // 约64.85亿港元大盘
-                isAH: true,
-                ahDiscount: 18.2, // H股较A股折价极窄，只有18.2%
-                greenShoe: true
-            },
-            {
-                status: 'active',
-                code: "06951",
-                name: "三环集团",
-                listDate: "2026-07-09",
-                sector: "hot",
-                sectorName: "电子陶瓷元件",
-                sponsor: "tier1",
-                sponsorName: "中金公司",
-                margin: 105.8, // 孖展火热 (超100倍)
-                cornerstone: 50,
-                floatCap: 71.58, // 大中盘
-                isAH: true,
-                ahDiscount: 42.1, // 深度折价42.1%
-                greenShoe: true
-            },
-            {
-                status: 'active',
-                code: "03752",
-                name: "珞石机器人",
-                listDate: "2026-07-09",
-                sector: "hot",
-                sectorName: "协作/工业机器人",
-                sponsor: "tier2",
-                sponsorName: "某中资保荐人",
-                margin: 1.2, // 孖展极冷
-                cornerstone: 35,
-                floatCap: 8.75, // 仅 8.75 亿
-                isAH: false,
-                ahDiscount: 0,
-                greenShoe: true
-            },
-            {
-                status: 'active',
-                code: "00537",
-                name: "普源精电",
-                listDate: "2026-07-09",
-                sector: "normal",
-                sectorName: "电子测量仪器",
-                sponsor: "tier2",
-                sponsorName: "某外资券商",
-                margin: 2.5,
-                cornerstone: 20,
-                floatCap: 11.4,
-                isAH: true,
-                ahDiscount: 25.0,
-                greenShoe: false // 无绿鞋 (重大减分项)
-            },
-            {
-                status: 'active',
-                code: "02667",
-                name: "同仁堂医养",
-                listDate: "2026-07-07",
-                sector: "normal",
-                sectorName: "大健康/中医养老",
-                sponsor: "tier1",
-                sponsorName: "中金公司",
-                margin: 18.2, // 孖展偏冷 (回拨高危区)
-                cornerstone: 48,
-                floatCap: 12.5,
-                isAH: false,
-                ahDiscount: 0,
-                greenShoe: true
-            },
-            {
-                status: 'active',
-                code: "02797",
-                name: "齐云山食品",
-                listDate: "2026-07-09",
-                sector: "cold",
-                sectorName: "传统休闲食品",
-                sponsor: "tier3",
-                sponsorName: "不知名小保荐",
-                margin: 0.4, // 认购不足 (极冷)
-                cornerstone: 15, // 几乎无基石
-                floatCap: 1.5, // 极小市值
-                isAH: false,
-                ahDiscount: 0,
-                greenShoe: true
-            },
-
-            // --- 历史参考区：已上市标的仅复盘首日战绩，绝不给出主观建议 ---
-            {
-                status: 'listed',
-                code: "03347",
-                name: "真健康医疗-B",
-                listDate: "2026-06-30",
-                sectorName: "手术机器人",
-                margin: 152.0,
-                cornerstone: 52,
-                floatCap: 5.2,
-                darkPool: "+118.2%",
-                debut: "+156.4%",
-                profit: "一手约 +1.25万"
-            },
-            {
-                status: 'listed',
-                code: "01375",
-                name: "来福谐波",
-                listDate: "2026-06-30",
-                sectorName: "精密减速器",
-                margin: 88.5,
-                cornerstone: 45,
-                floatCap: 4.8,
-                darkPool: "+82.3%",
-                debut: "+105.1%",
-                profit: "一手约 +8600"
-            },
-            {
-                status: 'listed',
-                code: "02998",
-                name: "鲟龙科技",
-                listDate: "2026-06-30",
-                sectorName: "高档水产/鱼子酱",
-                margin: 0.9, // 极冷
-                cornerstone: 10,
-                floatCap: 1.8, // 妖股
-                darkPool: "+45.0%",
-                debut: "+98.7%", // 典型的套路拨
-                profit: "一手约 +4200"
-            },
-            {
-                status: 'listed',
-                code: "06675",
-                name: "SENASIC",
-                listDate: "2026-06-17",
-                sectorName: "车载传感器芯片",
-                margin: 350.1,
-                cornerstone: 48,
-                floatCap: 5.0,
-                darkPool: "+92.0%",
-                debut: "+127.1%",
-                profit: "一手约 +1.83万"
-            }
-        ];
+        let ipoData = [];
 
         // 评分视觉配置
-        const SCORE_UI = {
-            '全力申购': { bg: 'bg-rose-500/10', text: 'text-rose-400', border: 'border-rose-500/20', icon: '🔥' },
-            '积极参与': { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20', icon: '👍' },
-            '投机博弈': { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/20', icon: '🎲' },
-            '观望放弃': { bg: 'bg-slate-500/10', text: 'text-slate-400', border: 'border-slate-500/20', icon: '👀' },
-            '避险放弃': { bg: 'bg-red-500/10', text: 'text-red-400', border: 'border-red-500/20', icon: '⛔' }
+        const RATING_UI = {
+            '积极关注': { bg: 'bg-rose-500/10', text: 'text-rose-400', border: 'border-rose-500/20', icon: '🔥' },
+            '可参与':   { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20', icon: '👍' },
+            '投机博弈':  { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/20', icon: '🎲' },
+            '观望':     { bg: 'bg-slate-500/10', text: 'text-slate-400', border: 'border-slate-500/20', icon: '👀' },
         };
 
-        // 量化打分与决策引擎
-        function calculateIpoQuant(stock) {
-            let score = 10; // 基础分
-            let reasons = [];
+        // ----- 渲染 -----
 
-            // 1. 孖展与回拨高危判断
-            if (stock.margin > 100) {
-                score += 30;
-                reasons.push("孖展超购爆表 (>100x)，触发最大回拨，情绪极度亢奋");
-            } else if (stock.margin >= 15 && stock.margin <= 50) {
-                score -= 10;
-                reasons.push("超购处于 15x-50x 极度危险温水区，30%回拨易导致散户多头踩踏");
-            } else if (stock.margin < 1.0) {
-                score += 25;
-                reasons.push("散户认购不足 (<1x)，筹码被国配机构高度控盘，具'套路拨'大妖潜质");
-            } else {
-                score += 5;
-                reasons.push("孖展情绪平淡");
+        function renderAll() {
+            const items = Array.isArray(ipoData) ? ipoData.filter(d => !d._meta) : [];
+            const meta = Array.isArray(ipoData) ? ipoData.find(d => d._meta) : null;
+
+            if (meta && meta._meta && meta._meta.generatedAt) {
+                document.getElementById('syncTime').innerText = meta._meta.generatedAt;
             }
 
-            // 2. 基石锁定比例
-            if (stock.cornerstone >= 50) {
-                score += 30;
-                reasons.push("基石比例锁死半成以上筹码，首日抛压极大降低");
-            } else if (stock.cornerstone >= 30) {
-                score += 15;
-                reasons.push("基石锁定属于中规中矩水平");
-            } else {
-                score -= 5;
-                reasons.push("无基石或基石比例稀薄，筹码确定性极弱");
-            }
+            const active = items.filter(s => s.status === 'active');
+            const listed = items.filter(s => s.status === 'listed');
 
-            // 3. 稳价保荐及绿鞋
-            if (stock.sponsor === 'tier1') {
-                score += 15;
-            } else if (stock.sponsor === 'tier3') {
-                score -= 20;
-                reasons.push("保荐人历史护盘不佳，首日跌幅率偏高");
-            }
-
-            if (!stock.greenShoe) {
-                score -= 15;
-                reasons.push("无绿鞋（超额配售选择权）托底，大跌时缺乏护盘买单");
-            }
-
-            // 4. A+H 折价深度
-            if (stock.isAH) {
-                if (stock.ahDiscount >= 40) {
-                    score += 20;
-                    reasons.push(`较A股价格深折价达 ${stock.ahDiscount}%，提供天然套利安全垫`);
-                } else if (stock.ahDiscount < 20) {
-                    score -= 15;
-                    reasons.push(`A+H 溢价折让极其狭窄 (${stock.ahDiscount}%)，毫无安全空间`);
-                }
-            }
-
-            // 5. 最终决策定性
-            let rating = "观望放弃";
-            if (stock.sponsor === 'tier3' || (stock.isAH && stock.ahDiscount < 20)) {
-                rating = "避险放弃";
-            } else if (stock.floatCap <= 3.0 && stock.margin < 1.0) {
-                rating = "投机博弈";
-            } else if (score >= 70) {
-                rating = "全力申购";
-            } else if (score >= 50) {
-                rating = "积极参与";
-            }
-
-            return { score, rating, reasons: reasons.slice(0, 2) };
+            document.getElementById('activeCount').innerText = active.length;
+            renderActiveCards(active);
+            renderHistoryTable(listed);
         }
 
-        // 渲染招股卡片
-        function renderActiveCards() {
+        function renderActiveCards(active) {
             const grid = document.getElementById('activeIpoGrid');
-            const actives = ipoData.filter(s => s.status === 'active');
-            document.getElementById('activeCount').innerText = actives.length;
-
-            if (actives.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full py-12 text-center text-slate-500">
-                        <i class="fa-solid fa-folder-open text-4xl mb-3"></i>
-                        <p class="text-sm">暂无招股中的港股新股</p>
-                    </div>
-                `;
+            if (active.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-500">
+                    <i class="fa-solid fa-folder-open text-4xl mb-3"></i>
+                    <p class="text-sm">暂无招股中的港股新股</p>
+                </div>`;
                 return;
             }
+            grid.innerHTML = active.map(stock => {
+                const score = stock.score || 0;
+                const rating = stock.rating || '观望';
+                const ui = RATING_UI[rating] || RATING_UI['观望'];
 
-            grid.innerHTML = actives.map(stock => {
-                const { score, rating, reasons } = calculateIpoQuant(stock);
-                const ui = SCORE_UI[rating];
+                const ahBadge = stock.isAH && stock.ahDiscount != null ? `
+                    <div class="col-span-2 flex justify-between items-center bg-slate-950/50 border border-slate-800 rounded-lg p-2.5 text-xs">
+                        <span class="text-slate-500"><i class="fa-solid fa-link text-indigo-400 mr-1"></i> A+H 联动折让</span>
+                        <span class="font-mono font-bold ${stock.ahDiscount >= 20 ? 'text-rose-400' : 'text-slate-400'} px-2 py-0.5 rounded">H股折价 ${stock.ahDiscount}%</span>
+                    </div>` : '';
 
-                // A+H股联动特殊UI渲染
-                let ahBadge = '';
-                if (stock.isAH) {
-                    const discountColor = stock.ahDiscount >= 40 ? 'text-rose-400 bg-rose-500/10' : 'text-slate-400 bg-slate-800';
-                    ahBadge = `
-                        <div class="col-span-2 flex justify-between items-center bg-slate-950/50 border border-slate-800 rounded-lg p-2.5 text-xs">
-                            <span class="text-slate-500"><i class="fa-solid fa-link text-indigo-400 mr-1"></i> A+H 联动折让</span>
-                            <span class="font-mono font-bold ${discountColor} px-2 py-0.5 rounded">H股折价 ${stock.ahDiscount}%</span>
+                return `<div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 glow-card flex flex-col justify-between h-full relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h3 class="text-lg font-bold text-white">${stock.name}</h3>
+                                    <span class="text-[10px] font-mono font-semibold bg-indigo-500/10 text-indigo-400 px-2 py-0.5 border border-indigo-500/20 rounded">${stock.code}.HK</span>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-1">${stock.sectorName || '待更新'} | ${stock.listDate} 挂牌</p>
+                            </div>
+                            <span class="${ui.bg} ${ui.text} ${ui.border} border px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm">
+                                <span>${ui.icon}</span>${rating}
+                            </span>
                         </div>
-                    `;
-                }
-
-                return `
-                    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 glow-card flex flex-col justify-between h-full relative overflow-hidden group">
-                        <!-- 顶层彩条 -->
-                        <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-                        
-                        <div>
-                            <!-- 卡片顶：代号、代码、定级 -->
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <div class="flex items-center gap-2">
-                                        <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">${stock.name}</h3>
-                                        <span class="text-[10px] font-mono font-semibold bg-indigo-500/10 text-indigo-400 px-2 py-0.5 border border-indigo-500/20 rounded">${stock.code}.HK</span>
-                                    </div>
-                                    <p class="text-xs text-slate-500 mt-1">${stock.sectorName} | 预期 ${stock.listDate} 挂牌</p>
-                                </div>
-                                <span class="${ui.bg} ${ui.text} ${ui.border} border px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 rating-badge shadow-sm">
-                                    <span>${ui.icon}</span>${rating}
-                                </span>
+                        <div class="grid grid-cols-2 gap-3 mb-5">
+                            <div class="bg-slate-950/50 border border-slate-800/80 rounded-xl p-3">
+                                <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider block mb-1">招股价</span>
+                                <span class="text-base font-mono font-bold text-slate-200">$${stock.offerPrice || '?'} <span class="text-xs text-slate-500 font-normal">港元</span></span>
                             </div>
-
-                            <!-- 量化指标区 -->
-                            <div class="grid grid-cols-2 gap-3 mb-5">
-                                <div class="bg-slate-950/50 border border-slate-800/80 rounded-xl p-3">
-                                    <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider block mb-1">孖展超购</span>
-                                    <span class="text-base font-mono font-bold text-slate-200">${stock.margin} <span class="text-xs text-slate-500 font-normal">倍</span></span>
-                                </div>
-                                <div class="bg-slate-950/50 border border-slate-800/80 rounded-xl p-3">
-                                    <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider block mb-1">基石锁筹</span>
-                                    <span class="text-base font-mono font-bold text-slate-200">${stock.cornerstone} <span class="text-xs text-slate-500 font-normal">%</span></span>
-                                </div>
-                                <div class="bg-slate-950/50 border border-slate-800/80 rounded-xl p-3">
-                                    <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider block mb-1">首日流盘</span>
-                                    <span class="text-base font-mono font-bold text-slate-200">${stock.floatCap >= 100 ? (stock.floatCap/10).toFixed(1)+'k' : stock.floatCap} <span class="text-xs text-slate-500 font-normal">亿港元</span></span>
-                                </div>
-                                <div class="bg-indigo-500/5 border border-indigo-500/10 rounded-xl p-3 flex flex-col justify-center">
-                                    <span class="text-[10px] text-indigo-400 uppercase font-bold tracking-wider block mb-1">量化得分</span>
-                                    <span class="text-lg font-mono font-black text-indigo-400">${score} <span class="text-[10px] text-indigo-500 font-normal">/ 100</span></span>
-                                </div>
-                                ${ahBadge}
+                            <div class="bg-slate-950/50 border border-slate-800/80 rounded-xl p-3">
+                                <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider block mb-1">流通盘</span>
+                                <span class="text-base font-mono font-bold text-slate-200">${stock.floatCap ? stock.floatCap.toFixed(1) : '?'} <span class="text-xs text-slate-500 font-normal">亿港元</span></span>
                             </div>
-                        </div>
-
-                        <!-- 打新决策指导意见 (核心！) -->
-                        <div class="mt-auto pt-4 border-t border-slate-800/80">
-                            <div class="flex items-center gap-1.5 mb-2">
-                                <i class="fa-solid fa-scale-balanced text-indigo-400 text-xs"></i>
-                                <span class="text-xs font-bold text-slate-300">决策依据与操作要领：</span>
+                            <div class="bg-slate-950/50 border border-slate-800/80 rounded-xl p-3">
+                                <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider block mb-1">发售股份</span>
+                                <span class="text-base font-mono font-bold text-slate-200">${stock.sharesOffered ? (stock.sharesOffered/10000).toFixed(0) : '?'} <span class="text-xs text-slate-500 font-normal">万股</span></span>
                             </div>
-                            <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
-                                ${reasons.map(r => `<li class="flex items-start gap-1.5"><span class="text-indigo-500">•</span> <span>${r}。</span></li>`).join('')}
-                            </ul>
-                            <div class="mt-3 text-[10px] text-slate-500 flex justify-between items-center">
-                                <span>保荐人: ${stock.sponsorName}</span>
-                                <span>稳价绿鞋: ${stock.greenShoe ? '✅有' : '❌无'}</span>
+                            <div class="bg-indigo-500/5 border border-indigo-500/10 rounded-xl p-3">
+                                <span class="text-[10px] text-indigo-400 uppercase font-bold tracking-wider block mb-1">量化得分</span>
+                                <span class="text-lg font-mono font-black text-indigo-400">${score} <span class="text-[10px] text-indigo-500 font-normal">/ 100</span></span>
                             </div>
+                            ${ahBadge}
                         </div>
                     </div>
-                `;
+                    <div class="mt-auto pt-4 border-t border-slate-800/80">
+                        <div class="flex items-center gap-1.5 mb-2">
+                            <i class="fa-solid fa-scale-balanced text-indigo-400 text-xs"></i>
+                            <span class="text-xs font-bold text-slate-300">决策依据：</span>
+                        </div>
+                        <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
+                            ${(stock.reasons || ['暂无详细数据']).map(r => `<li class="flex items-start gap-1.5"><span class="text-indigo-500">•</span> <span>${r}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                </div>`;
             }).join('');
         }
 
-        // 渲染历史对照表格（严格无操作建议，仅作历史客观首日战绩对标）
-        function renderHistoryTable() {
-            const tableDiv = document.getElementById('historyIpoTable');
-            const listed = ipoData.filter(s => s.status === 'listed');
-
+        function renderHistoryTable(listed) {
+            const div = document.getElementById('historyIpoTable');
             if (listed.length === 0) {
-                tableDiv.innerHTML = `<div class="p-8 text-center text-slate-600">暂无历史参考数据</div>`;
+                div.innerHTML = `<div class="p-8 text-center text-slate-600">暂无历史参考数据</div>`;
                 return;
             }
-
-            tableDiv.innerHTML = `
+            div.innerHTML = `
                 <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-slate-800 bg-slate-950/50 text-xs font-bold uppercase tracking-wider text-slate-400">
                                 <th class="p-4">代码/名称</th>
-                                <th class="p-4">行业赛道</th>
-                                <th class="p-4 text-center">招股热度 (孖展)</th>
-                                <th class="p-4 text-center">基石锁定</th>
-                                <th class="p-4 text-center">流盘市值</th>
-                                <th class="p-4 text-center">暗盘收盘</th>
-                                <th class="p-4 text-center bg-indigo-500/5 text-indigo-400">首日表现 (实际)</th>
-                                <th class="p-4 text-right">一手参考盈亏</th>
+                                <th class="p-4">行业</th>
+                                <th class="p-4 text-center">上市日期</th>
+                                <th class="p-4 text-center">招股价</th>
+                                <th class="p-4 text-center">当前价</th>
+                                <th class="p-4 text-center bg-indigo-500/5 text-indigo-400">累计表现</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-800 text-xs text-slate-300 font-medium">
                             ${listed.map(stock => {
-                                const isUp = stock.debut.startsWith('+');
-                                const highlightColor = isUp ? 'text-rose-400' : 'text-emerald-400';
-                                const highlightBg = isUp ? 'bg-rose-500/5' : 'bg-emerald-500/5';
-                                
-                                return `
-                                    <tr class="hover:bg-slate-800/30 transition-colors">
-                                        <td class="p-4">
-                                            <div class="font-bold text-white">${stock.name}</div>
-                                            <div class="text-[10px] font-mono text-slate-500 mt-0.5">${stock.code}.HK</div>
-                                        </td>
-                                        <td class="p-4 text-slate-400">${stock.sectorName}</td>
-                                        <td class="p-4 text-center font-mono">${stock.margin}x</td>
-                                        <td class="p-4 text-center font-mono">${stock.cornerstone}%</td>
-                                        <td class="p-4 text-center font-mono">${stock.floatCap}亿</td>
-                                        <td class="p-4 text-center font-mono ${highlightColor}">${stock.darkPool}</td>
-                                        <td class="p-4 text-center font-mono font-bold ${highlightBg} ${highlightColor}">${stock.debut}</td>
-                                        <td class="p-4 text-right font-semibold ${highlightColor}">${stock.profit}</td>
-                                    </tr>
-                                `;
+                                const debut = stock.debut || 'N/A';
+                                const isUp = debut.startsWith('+');
+                                const color = isUp ? 'text-rose-400' : (debut === 'N/A' ? '' : 'text-emerald-400');
+                                const bg = isUp ? 'bg-rose-500/5' : (debut === 'N/A' ? '' : 'bg-emerald-500/5');
+                                return `<tr class="hover:bg-slate-800/30 transition-colors">
+                                    <td class="p-4">
+                                        <div class="font-bold text-white">${stock.name}</div>
+                                        <div class="text-[10px] font-mono text-slate-500 mt-0.5">${stock.code}.HK</div>
+                                    </td>
+                                    <td class="p-4 text-slate-400">${stock.sectorName || '-'}</td>
+                                    <td class="p-4 text-center font-mono">${stock.listDate || '-'}</td>
+                                    <td class="p-4 text-center font-mono">${stock.offerPrice ? '$' + stock.offerPrice : '-'}</td>
+                                    <td class="p-4 text-center font-mono">${stock.currentPrice ? '$' + stock.currentPrice : '-'}</td>
+                                    <td class="p-4 text-center font-mono font-bold ${bg} ${color}">${debut}</td>
+                                </tr>`;
                             }).join('')}
                         </tbody>
                     </table>
-                </div>
-            `;
+                </div>`;
         }
 
-        // 同步窗口切换
+        // ----- 同步 -----
+
         function toggleSyncModal() {
-            const modal = document.getElementById('syncModal');
-            modal.classList.toggle('hidden');
+            document.getElementById('syncModal').classList.toggle('hidden');
         }
 
-        // 导入从 Python 脚本中复制过来的 JSON 数据
         function importJsonData() {
-            const rawJson = document.getElementById('jsonInput').value.trim();
-            if (!rawJson) {
-                alert("请输入合法的 JSON 数据");
-                return;
-            }
+            const raw = document.getElementById('jsonInput').value.trim();
+            if (!raw) return alert('请输入 JSON 数据');
             try {
-                const parsed = JSON.parse(rawJson);
-                if (Array.isArray(parsed)) {
-                    ipoData = parsed;
-                    renderActiveCards();
-                    renderHistoryTable();
-                    
-                    // 更新同步时间
-                    const now = new Date();
-                    document.getElementById('syncTime').innerText = now.getFullYear() + '-' + 
-                        String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-                        String(now.getDate()).padStart(2, '0') + ' ' + 
-                        String(now.getHours()).padStart(2, '0') + ':' + 
-                        String(now.getMinutes()).padStart(2, '0') + ':' + 
-                        String(now.getSeconds()).padStart(2, '0');
-                        
-                    toggleSyncModal();
-                } else {
-                    alert("JSON 数据必须为数组格式！");
-                }
-            } catch (err) {
-                alert("解析失败，请检查 JSON 格式是否正确: " + err.message);
+                const parsed = JSON.parse(raw);
+                const arr = Array.isArray(parsed) ? parsed : [parsed];
+                ipoData = arr;
+                renderAll();
+                const now = new Date();
+                document.getElementById('syncTime').innerText =
+                    now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' +
+                    String(now.getDate()).padStart(2,'0') + ' ' +
+                    String(now.getHours()).padStart(2,'0') + ':' +
+                    String(now.getMinutes()).padStart(2,'0') + ':' +
+                    String(now.getSeconds()).padStart(2,'0');
+                toggleSyncModal();
+            } catch(e) {
+                alert('解析失败: ' + e.message);
             }
         }
 
-        // 页面初始化加载
+        // ----- 初始化 -----
+
         document.addEventListener('DOMContentLoaded', () => {
-            renderActiveCards();
-            renderHistoryTable();
+            renderAll();
         });
     </script>
 </body>
