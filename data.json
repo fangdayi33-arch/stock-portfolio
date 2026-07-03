@@ -263,6 +263,18 @@
       "price": 80.86,
       "industry": "",
       "note": ""
+    },
+    {
+      "id": "s_1783057074072_xtv8",
+      "market": "a",
+      "account": "haitong_a",
+      "name": "双创ETF",
+      "code": "159783",
+      "cost": 1.359,
+      "shares": 7400,
+      "price": 1.357,
+      "industry": "",
+      "note": ""
     }
   ],
   "cash": {
