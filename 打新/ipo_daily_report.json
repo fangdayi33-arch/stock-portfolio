@@ -1,0 +1,201 @@
+[
+    {
+        "status": "active",
+        "code": "02475",
+        "name": "立讯精密",
+        "listDate": "2026-07-09",
+        "sectorName": "消费电子/硬科技",
+        "margin": 45.2,
+        "cornerstone": 55,
+        "floatCap": 242.66,
+        "isAH": true,
+        "ahDiscount": 35.5,
+        "sponsor": "tier1",
+        "sponsorName": "中金公司",
+        "greenShoe": true,
+        "score": 45,
+        "rating": "观望放弃",
+        "reasons": [
+            "处于 15x-50x 极其尴尬的'温水区'，触发30%回拨但热度不够，极易踩踏破发",
+            "基石锁仓比例超 50%，首日流通盘抛压被锁死"
+        ]
+    },
+    {
+        "status": "active",
+        "code": "02249",
+        "name": "晶合集成",
+        "listDate": "2026-07-09",
+        "sectorName": "半导体代工",
+        "margin": 8.5,
+        "cornerstone": 42,
+        "floatCap": 64.85,
+        "isAH": true,
+        "ahDiscount": 18.2,
+        "sponsor": "tier1",
+        "sponsorName": "国泰君安",
+        "greenShoe": true,
+        "score": 30,
+        "rating": "避险放弃",
+        "reasons": [
+            "孖展认购情绪温和",
+            "基石比例一般，有一定安全垫"
+        ]
+    },
+    {
+        "status": "active",
+        "code": "06951",
+        "name": "三环集团",
+        "listDate": "2026-07-09",
+        "sectorName": "电子陶瓷元件",
+        "margin": 105.8,
+        "cornerstone": 50,
+        "floatCap": 71.58,
+        "isAH": true,
+        "ahDiscount": 42.1,
+        "sponsor": "tier1",
+        "sponsorName": "中金公司",
+        "greenShoe": true,
+        "score": 105,
+        "rating": "全力申购",
+        "reasons": [
+            "公开发售热度极高 (>100x)，触发最高回拨，多头强劲",
+            "基石锁仓比例超 50%，首日流通盘抛压被锁死"
+        ]
+    },
+    {
+        "status": "active",
+        "code": "03752",
+        "name": "珞石机器人",
+        "listDate": "2026-07-09",
+        "sectorName": "协作/工业机器人",
+        "margin": 1.2,
+        "cornerstone": 35,
+        "floatCap": 8.75,
+        "isAH": false,
+        "ahDiscount": 0,
+        "sponsor": "tier2",
+        "sponsorName": "中信证券",
+        "greenShoe": true,
+        "score": 30,
+        "rating": "观望放弃",
+        "reasons": [
+            "孖展认购情绪温和",
+            "基石比例一般，有一定安全垫"
+        ]
+    },
+    {
+        "status": "active",
+        "code": "00537",
+        "name": "普源精电",
+        "listDate": "2026-07-09",
+        "sectorName": "电子测量仪器",
+        "margin": 2.5,
+        "cornerstone": 20,
+        "floatCap": 11.4,
+        "isAH": true,
+        "ahDiscount": 25.0,
+        "sponsor": "tier2",
+        "sponsorName": "中信建投",
+        "greenShoe": false,
+        "score": -5,
+        "rating": "观望放弃",
+        "reasons": [
+            "孖展认购情绪温和",
+            "无基石或基石比例薄弱，缺乏机构护盘背书"
+        ]
+    },
+    {
+        "status": "active",
+        "code": "02667",
+        "name": "同仁堂医养",
+        "listDate": "2026-07-07",
+        "sectorName": "大健康/中医养老",
+        "margin": 18.2,
+        "cornerstone": 48,
+        "floatCap": 12.5,
+        "isAH": false,
+        "ahDiscount": 0,
+        "sponsor": "tier1",
+        "sponsorName": "中金公司",
+        "greenShoe": true,
+        "score": 30,
+        "rating": "观望放弃",
+        "reasons": [
+            "处于 15x-50x 极其尴尬的'温水区'，触发30%回拨但热度不够，极易踩踏破发",
+            "基石比例一般，有一定安全垫"
+        ]
+    },
+    {
+        "status": "active",
+        "code": "02797",
+        "name": "齐云山食品",
+        "listDate": "2026-07-09",
+        "sectorName": "传统休闲食品",
+        "margin": 0.4,
+        "cornerstone": 15,
+        "floatCap": 1.5,
+        "isAH": false,
+        "ahDiscount": 0,
+        "sponsor": "tier3",
+        "sponsorName": "某中资小券商",
+        "greenShoe": true,
+        "score": 10,
+        "rating": "避险放弃",
+        "reasons": [
+            "公开发售认购不足 (<1x)，筹码全部归国配机构锁定，具备'套路拨'潜质",
+            "无基石或基石比例薄弱，缺乏机构护盘背书"
+        ]
+    },
+    {
+        "status": "listed",
+        "code": "03347",
+        "name": "真健康医疗-B",
+        "listDate": "2026-06-30",
+        "sectorName": "手术机器人",
+        "margin": 152.0,
+        "cornerstone": 52,
+        "floatCap": 5.2,
+        "darkPool": "+118.2%",
+        "debut": "+156.4%",
+        "profit": "一手约 +1.25万"
+    },
+    {
+        "status": "listed",
+        "code": "01375",
+        "name": "来福谐波",
+        "listDate": "2026-06-30",
+        "sectorName": "精密减速器",
+        "margin": 88.5,
+        "cornerstone": 45,
+        "floatCap": 4.8,
+        "darkPool": "+82.3%",
+        "debut": "+105.1%",
+        "profit": "一手约 +8600"
+    },
+    {
+        "status": "listed",
+        "code": "02998",
+        "name": "鲟龙科技",
+        "listDate": "2026-06-30",
+        "sectorName": "高档水产/鱼子酱",
+        "margin": 0.9,
+        "cornerstone": 10,
+        "floatCap": 1.8,
+        "darkPool": "+45.0%",
+        "debut": "+98.7%",
+        "profit": "一手约 +4200"
+    },
+    {
+        "status": "listed",
+        "code": "06675",
+        "name": "SENASIC",
+        "listDate": "2026-06-17",
+        "sectorName": "车载传感器芯片",
+        "margin": 350.1,
+        "cornerstone": 48,
+        "floatCap": 5.0,
+        "darkPool": "+92.0%",
+        "debut": "+127.1%",
+        "profit": "一手约 +1.83万"
+    }
+]
