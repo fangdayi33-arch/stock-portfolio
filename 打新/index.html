@@ -140,8 +140,9 @@
             const grid = document.getElementById('activeIpoGrid');
             if (active.length === 0) {
                 grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-500">
-                    <i class="fa-solid fa-folder-open text-4xl mb-3"></i>
-                    <p class="text-sm">暂无招股中的港股新股</p>
+                    <i class="fa-solid fa-cloud-arrow-down text-4xl mb-3"></i>
+                    <p class="text-sm font-medium">暂无数据</p>
+                    <p class="text-xs text-slate-600 mt-2">点右上角「数据源同步」导入 JSON，或启动本地服务器自动加载</p>
                 </div>`;
                 return;
             }
@@ -273,9 +274,25 @@
             }
         }
 
-        // ----- 初始化 -----
+        // ----- 自动加载 -----
+
+        async function autoLoadJson() {
+            try {
+                const resp = await fetch('ipo_daily_report.json?_=' + Date.now());
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                const data = await resp.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    ipoData = data;
+                    renderAll();
+                }
+            } catch (e) {
+                // file:// 协议下无法 fetch，提示用户同步
+                console.log('自动加载失败，请手动同步 JSON');
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
+            autoLoadJson();
             renderAll();
         });
     </script>
